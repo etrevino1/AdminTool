@@ -8,6 +8,8 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 import mx.izzi.admintool.business.CpeBusiness;
+import mx.izzi.admintool.business.MixedBusiness;
+import tv.mirada.www.iris.core.types.Subscriber;
 
 public class CpeAction extends ActionSupport {
 	static final long serialVersionUID = 1L;
@@ -15,10 +17,11 @@ public class CpeAction extends ActionSupport {
 	
 	private String irisId = null, account = null, hardwareId = null, type = null, node = null;
 	
-	private CpeBusiness cpeBusiness;
+	private CpeBusiness cpeBusiness = null;
+	private MixedBusiness mixedBusiness = null;
 	
 	public String execute(){
-		log.debug("CPE iris Id" + irisId);
+		log.debug("CPE iris Id: " + irisId);
 		this.cpeBusiness.deleteCPE(irisId, node);
 		irisId=null;
 		return SUCCESS;
@@ -33,9 +36,24 @@ public class CpeAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	public String findCPE(){
+		log.debug("CpeAction - findCPE: hardwareId: " + hardwareId + ", node: " + node );
+		
+		if(hardwareId != null){
+			Subscriber subscriber = mixedBusiness.findCPESubscriber(hardwareId, node);
+			((Map<String, String>)ActionContext.getContext().get("session")).put("account", subscriber.getOperatorSubscriberId().getId());
+			return "found";
+		}
+		
+		return SUCCESS;
+	}
+	
 	public void validate(){
+		log.debug("CpeAction - validate");
 		account = (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account");
 		node = (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node");
+		log.debug("account: " + account);
+		log.debug("node: " + node);
 	}
 	
 	
@@ -44,16 +62,12 @@ public class CpeAction extends ActionSupport {
 		this.cpeBusiness = cpeBusiness;
 	}
 
-	public String getIrisId() {
-		return irisId;
+	public void setMixedBusiness(MixedBusiness mixedBusiness) {
+		this.mixedBusiness = mixedBusiness;
 	}
 
 	public void setIrisId(String irisId) {
 		this.irisId = irisId;
-	}
-
-	public String getAccount() {
-		return account;
 	}
 
 	public void setAccount(String account) {
@@ -64,14 +78,8 @@ public class CpeAction extends ActionSupport {
 		this.hardwareId = hardwareId;
 	}
 
-	public String getType() {
-		return type;
-	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	
-	
 }

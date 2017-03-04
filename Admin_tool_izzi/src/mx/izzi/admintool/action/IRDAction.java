@@ -5,23 +5,21 @@ import java.util.Map;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-import mx.izzi.admintool.business.ActivationBusiness;
+import mx.izzi.admintool.business.MixedBusiness;
 
-public class ActivateSubscriberAction extends ActionSupport {
+public class IRDAction extends ActionSupport {
 
 	static final long serialVersionUID = 741852963;
 
-//	private String subscriber = null, node = null;
-	private ActivationBusiness activationBusiness = null;
-
+	private MixedBusiness mixedBusiness = null;
 
 	public String execute(){
-		activationBusiness.activateAccount((String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account"), (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
+		mixedBusiness.activateAccount((String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account"), (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
 		return SUCCESS;
 	}
 
-	public void setActivationBusiness(ActivationBusiness activationBusiness) {
-		this.activationBusiness = activationBusiness;
+	public void setMixedBusiness(MixedBusiness mixedBusiness) {
+		this.mixedBusiness = mixedBusiness;
 	}
 
 }

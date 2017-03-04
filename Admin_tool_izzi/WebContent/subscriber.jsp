@@ -37,9 +37,13 @@ open('newSubscriber.jsp','','top=300,left=300,width=300,height=300') ;
 	<s:url id="localeDE" namespace="/" action="locale">
 		<s:param name="request_locale">de</s:param>
 	</s:url>
+	<s:url id="findCPE" namespace="/" action="findCPE">
+	</s:url>
 	<s:a href="%{localeEN}">English</s:a>
 	<s:a href="%{localeES}">Español</s:a>
 	<s:a href="%{localeDE}">Deutsche</s:a>
+	<br/>
+	<s:a href="%{findCPE}">CPE</s:a>
 	<br/>
 	<a href="<s:url action="index" namespace="config-browser" />">Launch the configuration browser</a>
 

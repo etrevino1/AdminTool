@@ -12,6 +12,8 @@ import mx.izzi.admintool.dao.CpeDAO;
 import mx.izzi.admintool.util.DetermineNode;
 import tv.mirada.www.iris.core.CPE.messages.CreateCustomerPremisesEquipmentRequest;
 import tv.mirada.www.iris.core.CPE.messages.DeleteCustomerPremisesEquipmentRequest;
+import tv.mirada.www.iris.core.CPE.messages.FindCustomerPremisesEquipmentRequest;
+import tv.mirada.www.iris.core.CPE.messages.FindCustomerPremisesEquipmentResponse;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 import tv.mirada.www.iris.core.types.DevicesServiceLocator;
 import tv.mirada.www.iris.core.types.DevicesSoap11Stub;
@@ -20,12 +22,12 @@ import tv.mirada.www.iris.core.types.OperatorSubscriberId;
 public class CpeDAOImpl implements CpeDAO {
 
 	private Logger log = Logger.getLogger(this.getClass());
-	
+
 	@Override
 	public boolean deleteCPE(String irisId) {
 		return deleteCPE(irisId, "mex");
 	}
-	
+
 	@Override
 	public boolean deleteCPE(String irisId, String node) {
 		DeleteCustomerPremisesEquipmentRequest request = deleteCPERequest(irisId);
@@ -43,7 +45,7 @@ public class CpeDAOImpl implements CpeDAO {
 	public boolean addCPE(String account, String hardwareId, String type) {
 		return addCPE(account, hardwareId, type, "mex");
 	}
-	
+
 	@Override
 	public boolean addCPE(String account, String hardwareId, String type, String node) {
 		CreateCustomerPremisesEquipmentRequest request = addCPERequest(account, hardwareId, type);
@@ -56,6 +58,17 @@ public class CpeDAOImpl implements CpeDAO {
 		}
 
 		return true;
+	}
+
+	@Override
+	public FindCustomerPremisesEquipmentResponse findCPE(String hardwareId, String node){
+		FindCustomerPremisesEquipmentRequest request = findCPERequest(hardwareId);
+		try{
+			return getStub(node).findCustomerPremisesEquipment(request);
+		}catch(RemoteException re){
+			log.error(re.getMessage());
+		}
+		return null;
 	}
 
 	private DeleteCustomerPremisesEquipmentRequest deleteCPERequest(String irisId){
@@ -77,15 +90,21 @@ public class CpeDAOImpl implements CpeDAO {
 		return request;
 	}
 
+	private FindCustomerPremisesEquipmentRequest findCPERequest(String hardwareId){
+		return new FindCustomerPremisesEquipmentRequest(null, hardwareId);
+	}
+
 	private DevicesSoap11Stub getStub(String node){
 		DevicesSoap11Stub ds = null;
 
 		try{
-			ds = new DevicesSoap11Stub(new URL(DetermineNode.getService(node, "devie")), new DevicesServiceLocator());
+			ds = new DevicesSoap11Stub(new URL(DetermineNode.getService(node, "device")), new DevicesServiceLocator());
 		}catch(MalformedURLException mURLE){
 			log.error(mURLE.getMessage());
 		}catch(AxisFault af){
 			log.error(af.getMessage());
+		}catch(Exception e){
+			log.error(e.getMessage());
 		}
 
 		return ds;

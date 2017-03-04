@@ -9,7 +9,7 @@
 	<bean id="localeAction" class="mx.izzi.admintool.action.LocaleAction" scope="prototype">
 	</bean>
 
-	<!-- User Login -->
+	<!-- Subscriber -->
 	<bean id="subscriberDAO" class="mx.izzi.admintool.dao.impl.SubscriberDAOImpl"
 		scope="prototype">
 	</bean>
@@ -22,6 +22,8 @@
 		<property name="subscriberBusiness" ref="subscriberBusiness" />
 	</bean>
 
+
+	<!-- Servicees -->
 	<bean id="serviceDAO" class="mx.izzi.admintool.dao.impl.ServiceDAOImpl" scope="prototype">
 	</bean>
 
@@ -33,6 +35,8 @@
 		<property name="serviceBusiness" ref="serviceBusiness" />
 	</bean>
 
+
+	<!-- Devices -->
 	<bean id="cpeDAO" class="mx.izzi.admintool.dao.impl.CpeDAOImpl">
 	</bean>
 
@@ -42,6 +46,7 @@
 
 	<bean id="cpeAction" class="mx.izzi.admintool.action.CpeAction" scope="prototype">
 		<property name="cpeBusiness" ref="cpeBusiness"></property>
+		<property name="mixedBusiness" ref="mixedBusiness"></property>
 	</bean>
 
 	<bean id="miradaEquipoBusiness"
@@ -52,24 +57,22 @@
 		<property name="miradaEquipoBusiness" ref="miradaEquipoBusiness"></property>
 	</bean>
 
+	<!-- IRD -->
 	<bean id="irdDAO" class="mx.izzi.admintool.dao.impl.IRDCommandsDAOImpl">
 	</bean>
 
-	<bean id="activationBusiness" class="mx.izzi.admintool.business.impl.ActivationBusinessImpl">
-		<property name="subscriberBusiness" ref="subscriberBusiness"></property>
+	<bean id="iRDBusiness" class="mx.izzi.admintool.business.impl.IRDBusinessImpl">
 		<property name="iRDCommandsDAO" ref="irdDAO"></property>
 	</bean>
 
-	<bean id="activateAccount" class="mx.izzi.admintool.action.ActivateSubscriberAction" scope="prototype">
-		<property name="activationBusiness" ref="activationBusiness"></property>
+	<bean id="activateAccount" class="mx.izzi.admintool.action.IRDAction" scope="prototype">
+		<property name="activationBusiness" ref="iRDBusiness"></property>
 	</bean>
 
-	<bean id="izziMex" class="java.lang.String">
-		<constructor-arg value="http://172.20.183.55:8888"/>
-	</bean>
-	
-	<bean id="izziMty" class="java.lang.String">
-		<constructor-arg value="http://172.18.1.234:8888"/>
+	<bean id="mixedBusiness" class="mx.izzi.admintool.business.impl.MixedBusinessImpl">
+		<property name="subscriberBusiness" ref="subscriberBusiness"></property>
+		<property name="iRDBusiness" ref="iRDBusiness"></property>
+		<property name="cpeBusiness" ref="cpeBusiness"></property>
 	</bean>
 
 </beans>

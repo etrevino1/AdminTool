@@ -228,6 +228,8 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 			logger.error(_e.getMessage());
 		}catch(MalformedURLException _URLe){
 			logger.error(_URLe.getMessage());
+		}catch(Exception e){
+			logger.error(e.getMessage());
 		}
 		return ss;
 	}

@@ -10,7 +10,7 @@ public class DetermineNode {
 	private static final String IRD = "/managetv/prov/ird/";
 	
 	
-	public static String getService(String node, String service){
+	public static String getService(String node, String service) throws Exception{
 		
 		String address = "";
 		
@@ -18,6 +18,8 @@ public class DetermineNode {
 			address += IZZI_MEX;
 		}else if(node.equals("mty")){
 			address += IZZI_MTY;
+		}else{
+			throw new Exception("Invalid node: " + node);
 		}
 		
 		switch(service){
@@ -33,6 +35,8 @@ public class DetermineNode {
 		case "ird":
 			address += IRD;
 			break;
+			default:
+				throw new Exception("Invalid service: " + service);
 		}
 		
 		

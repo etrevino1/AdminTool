@@ -73,6 +73,8 @@ public class IRDCommandsDAOImpl implements IRDCommandsDAO {
 			log.error(af.getMessage());
 		}catch(MalformedURLException mURLe){
 			log.error(mURLe.getMessage());
+		}catch(Exception e){
+			log.error(e.getMessage());
 		}
 		return null;
 	}

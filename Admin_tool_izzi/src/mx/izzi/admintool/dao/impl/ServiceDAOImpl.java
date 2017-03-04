@@ -92,6 +92,8 @@ public class ServiceDAOImpl implements ServiceDAO{
 			log.error(_e.getMessage());
 		}catch(MalformedURLException _URLe){
 			log.error(_URLe.getMessage());
+		}catch(Exception e){
+			log.error(e.getMessage());
 		}
 		return ss;
 	}

@@ -18,7 +18,7 @@ public class SubscriberAction extends ActionSupport {
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	private SubscriberBusiness subscriberBusiness;
-	private String account = "", irisId ="", node="";
+	private String account = null, irisId = null, node = null;
 
 	private Subscriber subscriber = null;
 	private List<Subscription> subscription = null;
@@ -29,7 +29,7 @@ public class SubscriberAction extends ActionSupport {
 		logger.debug("SubscriberAction - execute : " + account + ", " + irisId + ", " + node);
 		if(account.length() > 0){
 			subscriber = getSubscriberBusiness().findSubscriber(account, node);
-		}else if (irisId.length() > 0){
+		}else if (irisId != null && irisId.length() > 0){
 			subscriber = getSubscriberBusiness().findSubscriber(Long.parseLong(irisId), node);
 			account = subscriber.getOperatorSubscriberId().getId();
 		}
@@ -57,6 +57,10 @@ public class SubscriberAction extends ActionSupport {
 		logger.debug("Node=" + node);
 		if(node == null || node == ""){
 			node = "mex";
+		}
+		logger.debug("Account=" + account);
+		if(account == null){
+			account = (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account");
 		}
 	}
 	

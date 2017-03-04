@@ -2,34 +2,21 @@ package mx.izzi.admintool.business.impl;
 
 import java.util.List;
 
-import mx.izzi.admintool.business.ActivationBusiness;
+import mx.izzi.admintool.business.IRDBusiness;
 import mx.izzi.admintool.business.SubscriberBusiness;
 import mx.izzi.admintool.dao.IRDCommandsDAO;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 
-public class ActivationBusinessImpl implements ActivationBusiness {
-
-	private SubscriberBusiness subscriberBusiness = null;
+public class IRDBusinessImpl implements IRDBusiness {
 
 	private IRDCommandsDAO iRDCommandsDAO = null;
 
 	@Override
-	public void activateAccount(String subscriber, String node) {
-		//getEquipments
-		List<CustomerPremisesEquipment> equipos = subscriberBusiness.getCPEs(subscriber, node);
-		//activateSubscriber
-		subscriberBusiness.activateSubscriber(subscriber, node);
-		//ActivateCPEs & RebootCPEs
-		for(CustomerPremisesEquipment equipo :equipos){
-			if(equipo.getHardwareId().length() == 16){
-				iRDCommandsDAO.enableSTB(equipo.getHardwareId());
-				iRDCommandsDAO.rebootSTB(equipo.getHardwareId());
-			}
+	public void activateCPE(CustomerPremisesEquipment equipo, String node){
+		if(equipo.getHardwareId().length() == 16){
+			iRDCommandsDAO.enableSTB(equipo.getHardwareId(), node);
+			iRDCommandsDAO.rebootSTB(equipo.getHardwareId(), node);
 		}
-	}
-
-	public void setSubscriberBusiness(SubscriberBusiness subscriberBusiness) {
-		this.subscriberBusiness = subscriberBusiness;
 	}
 
 	public void setiRDCommandsDAO(IRDCommandsDAO iRDCommandsDAO) {

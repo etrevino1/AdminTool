@@ -31,10 +31,10 @@ public class MixedBusinessImpl implements MixedBusiness {
 	@Override
 	public Subscriber findCPESubscriber(String hardwareId, String node){
 		
-		FindCustomerPremisesEquipmentResponse response = cpeBusiness.findCPE(hardwareId, node);
+		CustomerPremisesEquipment cpe = cpeBusiness.findCPE(hardwareId, node);
 		
-		if(response != null){
-			return subscriberBusiness.findSubscriber(response.getCustomerPremisesEquipment().getIrisSubscriberId(), node);
+		if(cpe != null){
+			return subscriberBusiness.findSubscriber(cpe.getIrisSubscriberId(), node);
 		}
 		
 		return null;
