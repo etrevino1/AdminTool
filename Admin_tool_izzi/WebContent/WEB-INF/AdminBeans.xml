@@ -23,7 +23,7 @@
 	</bean>
 
 
-	<!-- Servicees -->
+	<!-- Services -->
 	<bean id="serviceDAO" class="mx.izzi.admintool.dao.impl.ServiceDAOImpl" scope="prototype">
 	</bean>
 
