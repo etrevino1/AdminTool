@@ -14,10 +14,6 @@
 		<action name="findSubscriber" class="subscriberAction">
 			<result name="success">subscriber.jsp</result>
 		</action>
-		<action name="findCPE" class="cpeAction" method="findCPE">
-			<result name="success">cpe.jsp</result>
-			<result name="found" type="redirectAction">findSubscriber</result>
-		</action>
 		<action name="locale" class="localeAction">
 			<result name="SUCCESS" type="redirectAction">findSubscriber</result>
 		</action>
@@ -80,6 +76,7 @@
 				<param name="actionName">findSubscriber</param>
 				<param name="namespace">/</param>
 			</result>
+			
 		</action>
 		<action name="addCPE" method="addCPE" class="cpeAction">
 			<result name="success" type="redirectAction">

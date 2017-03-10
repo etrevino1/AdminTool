@@ -9,6 +9,7 @@ import org.apache.axis.AxisFault;
 import org.apache.log4j.Logger;
 
 import mx.izzi.admintool.dao.CpeDAO;
+import mx.izzi.admintool.exception.CPEException;
 import mx.izzi.admintool.util.DetermineNode;
 import tv.mirada.www.iris.core.CPE.messages.CreateCustomerPremisesEquipmentRequest;
 import tv.mirada.www.iris.core.CPE.messages.DeleteCustomerPremisesEquipmentRequest;
@@ -61,10 +62,13 @@ public class CpeDAOImpl implements CpeDAO {
 	}
 
 	@Override
-	public FindCustomerPremisesEquipmentResponse findCPE(String hardwareId, String node){
+	public FindCustomerPremisesEquipmentResponse findCPE(String hardwareId, String node) throws CPEException{
 		FindCustomerPremisesEquipmentRequest request = findCPERequest(hardwareId);
 		try{
 			return getStub(node).findCustomerPremisesEquipment(request);
+		}catch(AxisFault af){
+			log.error(af.getFaultString());
+			throw new CPEException(af.getFaultString() + ": " + hardwareId, af.getFaultString());
 		}catch(RemoteException re){
 			log.error(re.getMessage());
 		}
@@ -104,7 +108,7 @@ public class CpeDAOImpl implements CpeDAO {
 		}catch(AxisFault af){
 			log.error(af.getMessage());
 		}catch(Exception e){
-			log.error(e.getMessage());
+			log.error(e.getStackTrace());
 		}
 
 		return ds;

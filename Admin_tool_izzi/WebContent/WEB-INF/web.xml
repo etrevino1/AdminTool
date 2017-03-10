@@ -5,6 +5,23 @@
 	id="WebApp_ID" version="3.1">
 	<display-name>Admin_tool_izzi</display-name>
 
+<security-constraint>
+  <web-resource-collection>
+    <web-resource-name>The entire webapp</web-resource-name>
+    <url-pattern>/*</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+    <role-name>tomcat</role-name>
+  </auth-constraint>
+</security-constraint>
+<login-config>
+  <auth-method>BASIC</auth-method>
+  <realm-name>MyRealm</realm-name>
+</login-config>
+<security-role>
+  <role-name>tomcat</role-name>
+</security-role>
+
 	<jsp-config>
 		<taglib>
 			<taglib-uri>c.tld</taglib-uri>

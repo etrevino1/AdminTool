@@ -1,8 +1,7 @@
-
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
-<%-- <%@ taglib uri="/struts-dojo-tags" prefix="sx"%> --%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="/struts-dojo-tags" prefix="sx"%>
 
 <html>
 <head>
@@ -57,10 +56,15 @@ open('newSubscriber.jsp','','top=300,left=300,width=300,height=300') ;
 			</tr>
 			<tr>
 				<td>
+					<label>Nodo:</label>
+				</td>
+				<td>
 					<select name="node">
 						<option value="mex">México</option>
 						<option value="mty">Monterrey</option>
 					</select>
+<%-- 					<s:select key="label.node" list="node"/> --%>
+						
 				</td>
 			</tr>
 			<tr>

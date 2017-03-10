@@ -1073,5 +1073,10 @@ public class Subscriber  implements java.io.Serializable {
           new  org.apache.axis.encoding.ser.BeanDeserializer(
             _javaType, _xmlType, typeDesc);
     }
+    
+    @Override
+    public String toString(){
+    	return nickname;
+    }
 
 }

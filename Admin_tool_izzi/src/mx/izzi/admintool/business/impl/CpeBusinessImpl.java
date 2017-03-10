@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import mx.izzi.admintool.business.CpeBusiness;
 import mx.izzi.admintool.dao.CpeDAO;
+import mx.izzi.admintool.exception.CPEException;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 
 public class CpeBusinessImpl implements CpeBusiness {
@@ -25,7 +26,7 @@ public class CpeBusinessImpl implements CpeBusiness {
 	}
 	
 	@Override
-	public CustomerPremisesEquipment findCPE(String hardwareId, String node){
+	public CustomerPremisesEquipment findCPE(String hardwareId, String node) throws CPEException{
 		log.debug("CpeBusinessImpl - findCPE: hardwareId: " + hardwareId + ", node: " + node);
 		return cpeDAO.findCPE(hardwareId, node).getCustomerPremisesEquipment();
 	}

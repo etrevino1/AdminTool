@@ -523,4 +523,9 @@ public class Subscription  implements java.io.Serializable {
             _javaType, _xmlType, typeDesc);
     }
 
+    @Override
+    public String toString(){
+    	return packageName;
+    }
+    
 }

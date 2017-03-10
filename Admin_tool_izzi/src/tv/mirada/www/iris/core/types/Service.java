@@ -299,4 +299,8 @@ public class Service  implements java.io.Serializable {
             _javaType, _xmlType, typeDesc);
     }
 
+    public String toString(){
+    	return irisId + ":" + name;
+    }
+    
 }

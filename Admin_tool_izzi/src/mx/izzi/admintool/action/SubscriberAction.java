@@ -27,7 +27,12 @@ public class SubscriberAction extends ActionSupport {
 	@Override
 	public String execute () {
 		logger.debug("SubscriberAction - execute : " + account + ", " + irisId + ", " + node);
-		if(account.length() > 0){
+		
+		if(account == null && irisId == null){
+			return SUCCESS;
+		}
+		
+		if(account != null && account.length() > 0){
 			subscriber = getSubscriberBusiness().findSubscriber(account, node);
 		}else if (irisId != null && irisId.length() > 0){
 			subscriber = getSubscriberBusiness().findSubscriber(Long.parseLong(irisId), node);

@@ -6,6 +6,7 @@ import mx.izzi.admintool.business.IRDBusiness;
 import mx.izzi.admintool.business.CpeBusiness;
 import mx.izzi.admintool.business.MixedBusiness;
 import mx.izzi.admintool.business.SubscriberBusiness;
+import mx.izzi.admintool.exception.CPEException;
 import tv.mirada.www.iris.core.CPE.messages.FindCustomerPremisesEquipmentResponse;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 import tv.mirada.www.iris.core.types.Subscriber;
@@ -29,7 +30,7 @@ public class MixedBusinessImpl implements MixedBusiness {
 	}
 	
 	@Override
-	public Subscriber findCPESubscriber(String hardwareId, String node){
+	public Subscriber findCPESubscriber(String hardwareId, String node) throws CPEException{
 		
 		CustomerPremisesEquipment cpe = cpeBusiness.findCPE(hardwareId, node);
 		
