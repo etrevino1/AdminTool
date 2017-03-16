@@ -10,7 +10,7 @@
 <title>Find CPE</title>
 </head>
 <body>
-	<s:form method="post" action="/findCPE2">
+	<s:form method="post" action="/findCPE">
 		<table>
 			<tr>
 				<td><s:textfield key="label.hardwareId" name="hardwareId" /></td>

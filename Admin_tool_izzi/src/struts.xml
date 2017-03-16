@@ -86,12 +86,12 @@
 		</action>
 	</package>
 
-	<package name="activation" namespace="/ird" extends="struts-default">
-		<action name="activateAccount" class="activateAccount">
-			<result name="success" type="redirectAction">
-				<param name="actionName">findSubscriber</param>
-				<param name="nameSpace">/</param>
-			</result>
-		</action>
-	</package>
+<!-- 	<package name="activation" namespace="/ird" extends="struts-default"> -->
+<!-- 		<action name="activateAccount" class="activateAccount"> -->
+<!-- 			<result name="success" type="redirectAction"> -->
+<!-- 				<param name="actionName">findSubscriber</param> -->
+<!-- 				<param name="nameSpace">/</param> -->
+<!-- 			</result> -->
+<!-- 		</action> -->
+<!-- 	</package> -->
 </struts>

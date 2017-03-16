@@ -40,11 +40,11 @@ public class CpeAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	@Action(value="findCPE2",
+	@Action(value="findCPE",
 			results={
 					@Result(name="success", location="/cpe.jsp"),
 					@Result(name="found", location="findSubscriber", type="redirectAction"),
-					@Result(name="error", location="findCPE2", type="redirectAction")})
+					@Result(name="error", location="findCPE", type="redirectAction")})
 	public String findCPE(){
 		log.debug("CpeAction - findCPE: hardwareId: " + hardwareId + ", node: " + node );
 

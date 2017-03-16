@@ -244,4 +244,8 @@ public class ShowOSDMessageRequest  implements java.io.Serializable {
             _javaType, _xmlType, typeDesc);
     }
 
+    public String toString(){
+    	return "{" + message[0] + ", " + hardwareId + "}";
+    }
+    
 }

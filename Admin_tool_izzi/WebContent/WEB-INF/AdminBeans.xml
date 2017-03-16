@@ -66,7 +66,8 @@
 	</bean>
 
 	<bean id="activateAccount" class="mx.izzi.admintool.action.IRDAction" scope="prototype">
-		<property name="activationBusiness" ref="iRDBusiness"></property>
+		<property name="mixedBusiness" ref="mixedBusiness"></property>
+		<property name="iRDBusiness" ref="iRDBusiness"></property>
 	</bean>
 
 	<bean id="mixedBusiness" class="mx.izzi.admintool.business.impl.MixedBusinessImpl">
