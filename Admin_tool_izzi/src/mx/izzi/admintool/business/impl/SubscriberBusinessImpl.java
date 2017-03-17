@@ -46,9 +46,15 @@ public class SubscriberBusinessImpl implements SubscriberBusiness{
 	}
 	
 	@Override
-	public boolean newSubscriber(String account, String node){
+	public void deactivateSubscriber(String subscriber, String node){
+		logger.debug("SubscriberBusiness - deactivateSubscriber(subscriber)" + " - " + node);
+		this.getSubscriberDAO().deactivateSubscriber(subscriber, node);
+	}
+	
+	@Override
+	public boolean newSubscriber(String account, String region, String node){
 		logger.debug("SubscriberBusiness - newSubscriber" + " - " + node);
-		return getSubscriberDAO().newSubscriber(account, node);
+		return getSubscriberDAO().newSubscriber(account, region,  node);
 	}
 	
 	@Override

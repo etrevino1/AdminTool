@@ -13,17 +13,23 @@ public class IRDBusinessImpl implements IRDBusiness {
 	private IRDCommandsDAO iRDCommandsDAO = null;
 
 	@Override
-	public void activateCPE(CustomerPremisesEquipment equipo, String node){
+	public void enableCPE(CustomerPremisesEquipment equipo, String node){
 		if(equipo.getHardwareId().length() == 16){
 			iRDCommandsDAO.enableSTB(equipo.getHardwareId(), node);
 			iRDCommandsDAO.rebootSTB(equipo.getHardwareId(), node);
 		}
 	}
 
+	public void disableCPE(CustomerPremisesEquipment equipo, String node){
+		if(equipo.getHardwareId().length() == 16){
+			iRDCommandsDAO.disableSTB(equipo.getHardwareId(), node);
+		}
+	}
+	
 	@Override
-	public void sendMessage(String message, String hardwareId, String node){
+	public void sendMessage(String message, String hardwareId, boolean blocking, String node){
 		logger.debug("IRDBusinessImpl - sendMessage");
-		this.iRDCommandsDAO.showOSDMessage(message, hardwareId, node);
+		this.iRDCommandsDAO.showOSDMessage(message, hardwareId, blocking, node);
 	}
 	
 	public void setiRDCommandsDAO(IRDCommandsDAO iRDCommandsDAO) {

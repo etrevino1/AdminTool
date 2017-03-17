@@ -37,6 +37,17 @@ public class IRDAction extends ActionSupport {
 	}
 
 	@Action(
+			value="deactivateAccount" ,
+			results={
+					@Result(name="success", location="../findSubscriber", type="redirectAction")
+			}
+			)
+	public String deactivateAccount(){
+		mixedBusiness.deactivateAccount((String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account"), (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
+		return SUCCESS;
+	}
+	
+	@Action(
 			value="showMessage",
 			results={
 					@Result(name="success", location="../findSubscriber", type="redirectAction")
@@ -44,7 +55,7 @@ public class IRDAction extends ActionSupport {
 			)
 	public String sendMessage(){
 		logger.debug("Prueba de comunicación, " + hardwareId + ", " + (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
-		iRDBusiness.sendMessage("Prueba de comunicación", hardwareId, (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
+		iRDBusiness.sendMessage("Prueba de comunicación", hardwareId, false, (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
 		return SUCCESS;
 	}
 

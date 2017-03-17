@@ -20,10 +20,10 @@ table.list, table.list td, table.list th {
 }
 </style>
 
-<script> 
-function abrir() { 
-open('newSubscriber.jsp','','top=300,left=300,width=300,height=300') ; 
-} 
+<script>
+	function abrir() {
+		open('newSubscriber.jsp', '', 'top=300,left=300,width=300,height=300');
+	}
 </script>
 </head>
 <body>
@@ -41,35 +41,28 @@ open('newSubscriber.jsp','','top=300,left=300,width=300,height=300') ;
 	<s:a href="%{localeEN}">English</s:a>
 	<s:a href="%{localeES}">Español</s:a>
 	<s:a href="%{localeDE}">Deutsche</s:a>
-	<br/>
+	<br />
 	<s:a href="%{findCPE}">CPE</s:a>
-	<br/>
-	<a href="<s:url action="index" namespace="config-browser" />">Launch the configuration browser</a>
+	<br />
+	<a href="<s:url action="index" namespace="config-browser" />">Launch
+		the configuration browser</a>
 
 	<s:form method="post" action="/findSubscriber">
-		<table>
+		<table style="border: 1px solid black">
+			<s:textfield key="label.account" name="account" />
+			<s:textfield key="label.irisId" name="irisId" />
 			<tr>
-				<td><s:textfield key="label.account" name="account" /></td>
-			</tr>
-			<tr>
-				<td><s:textfield key="label.irisId" name="irisId" /></td>
-			</tr>
-			<tr>
-				<td>
-					<label>Nodo:</label>
-				</td>
-				<td>
-					<select name="node">
+				<td><label>Nodo:</label></td>
+				<td><select name="node" style="width: 100%;">
 						<option value="mex">México</option>
 						<option value="mty">Monterrey</option>
-					</select>
-<%-- 					<s:select key="label.node" list="node"/> --%>
-						
-				</td>
+				</select></td>
 			</tr>
 			<tr>
-				<td><s:submit key="label.retrieve"></s:submit></td>
-				<td><s:submit key="label.create" type="button" onclick="abrir();"></s:submit></td>
+				<td colspan="2">
+				<s:submit key="label.retrieve" type="button" theme="simple"/>
+				<s:submit key="label.create" type="button" onclick="abrir();" theme="simple"/>
+				</td>
 			</tr>
 		</table>
 	</s:form>
@@ -97,14 +90,22 @@ open('newSubscriber.jsp','','top=300,left=300,width=300,height=300') ;
 					<s:url id="activate" namespace="/ird" action="activateAccount">
 						<s:param name="subscriber">${account}</s:param>
 					</s:url> 
+					<s:url id="deactivate" namespace="/ird" action="deactivateAccount">
+						<s:param name="subscriber">${account}</s:param>
+					</s:url> 
 					<s:a href="%{deleteSubscriber}">Delete</s:a> 
 					<s:a href="%{activate}">Activate</s:a>
+					<s:a href="%{deactivate}">Deactivate</s:a>
 				</td>
 			</tr>
 		</table>
 	</c:if>
+	</br>
+	<h3>
+		<s:text name="label.package" />
+	</h3>
 
-	<s:form method="post" namespace="/service" action="addPackage">
+	<s:form method="post" namespace="/service" action="addPackage" >
 		<s:textfield key="label.package" name="irisPackage"></s:textfield>
 		<s:submit key="label.send"></s:submit>
 	</s:form>
@@ -134,13 +135,26 @@ open('newSubscriber.jsp','','top=300,left=300,width=300,height=300') ;
 		</table>
 	</c:if>
 
+	</br>
+	<h3>
+		<s:text name="label.hardwareId" />
+	</h3>
 	<s:form method="post" namespace="/cpe" action="addCPE">
-		<s:textfield key="label.hardwareId" name="hardwareId"></s:textfield>
-		<select name="type">
-			<option value="Technicolor 5010451">Technicolor</option>
-			<option value="PACE 5010452">Pace</option>
-		</select>
-		<s:submit key="label.send"></s:submit>
+		<table>
+			<tr>
+				<td><s:textfield key="label.hardwareId" name="hardwareId"></s:textfield></td>
+			</tr>
+			<tr>
+				<td><label>Nodo:</label></td>
+				<td><select name="type">
+						<option value="Technicolor 5010451">Technicolor</option>
+						<option value="PACE 5010452">Pace</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td><s:submit key="label.send"></s:submit></td>
+			</tr>
+		</table>
 	</s:form>
 
 	<c:if test="${!empty equipments}">
@@ -154,16 +168,12 @@ open('newSubscriber.jsp','','top=300,left=300,width=300,height=300') ;
 			</tr>
 			<c:forEach items="${equipments}" var="current">
 				<tr>
-					<td>
-						<s:url id="deleteCPE" namespace="/cpe" action="deleteCPE">
+					<td><s:url id="deleteCPE" namespace="/cpe" action="deleteCPE">
 							<s:param name="irisId">${current.irisId}</s:param>
 							<s:param name="account">${account}</s:param>
-						</s:url>
-						<s:url id="sendMessage" namespace="/ird" action="showMessage">
+						</s:url> <s:url id="sendMessage" namespace="/ird" action="showMessage">
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
-						</s:url> 
-						<s:a href="%{deleteCPE}">Delete</s:a>
-						<s:a href="%{sendMessage}">Message</s:a>
+						</s:url> <s:a href="%{deleteCPE}">Delete</s:a> <s:a href="%{sendMessage}">Message</s:a>
 					</td>
 					<td>${current.irisId}</td>
 					<td>${current.hardwareId}</td>

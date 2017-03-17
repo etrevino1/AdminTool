@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import mx.izzi.admintool.dao.IRDCommandsDAO;
 import mx.izzi.admintool.util.DetermineNode;
+import tv.mirada.www.iris.core.ird.messages.DisableSTBRequest;
 import tv.mirada.www.iris.core.ird.messages.EnableSTBRequest;
 import tv.mirada.www.iris.core.ird.messages.Message;
 import tv.mirada.www.iris.core.ird.messages.RebootSTBRequest;
@@ -24,7 +25,7 @@ public class IRDCommandsDAOImpl implements IRDCommandsDAO {
 	public void enableSTB(String hardwareId) {
 		enableSTB(hardwareId, "mex");
 	}
-	
+
 	@Override
 	public void enableSTB(String hardwareId, String node) {
 		EnableSTBRequest request = getEnableSTBRequest(hardwareId);
@@ -37,10 +38,21 @@ public class IRDCommandsDAOImpl implements IRDCommandsDAO {
 	}
 
 	@Override
+	public void disableSTB(String hardwareId, String node){
+		DisableSTBRequest request = getDisableSTBRequest(hardwareId);
+		try{
+			getStub(node).disableSTB(request);
+		}catch(RemoteException re){
+			log.error(re.getMessage());
+		}
+		log.info("IRDCommandsDAOImpl - disableSTB: " + hardwareId);
+	}
+
+	@Override
 	public void rebootSTB(String hardwareId) {
 		rebootSTB(hardwareId, "mex");
 	}
-	
+
 	@Override
 	public void rebootSTB(String hardwareId, String node) {
 		RebootSTBRequest request = getRebootSTBRequest(hardwareId);
@@ -54,8 +66,8 @@ public class IRDCommandsDAOImpl implements IRDCommandsDAO {
 	}
 
 	@Override
-	public void showOSDMessage(String message, String hardwareId, String node){
-		ShowOSDMessageRequest request = getShowOSDMessageRequest(message, hardwareId);
+	public void showOSDMessage(String message, String hardwareId, boolean blocking, String node){
+		ShowOSDMessageRequest request = getShowOSDMessageRequest(message, hardwareId, blocking);
 		try{
 			getStub(node).showOSDMessage(request);
 		}catch(RemoteException re){
@@ -63,9 +75,14 @@ public class IRDCommandsDAOImpl implements IRDCommandsDAO {
 		}
 		log.info("IRDCommandsDAOImpl - showOSDMessage: " + hardwareId + ", " + message + ", " + node);
 	}
-	
+
 	private EnableSTBRequest getEnableSTBRequest(String hardwareId){
 		return new EnableSTBRequest(hardwareId);
+	}
+
+	private DisableSTBRequest getDisableSTBRequest(String hardwareId){
+		Short sh1 = 40;
+		return new DisableSTBRequest(hardwareId, sh1, new Message[]{new Message("SPA", "Suspendido")});
 	}
 
 	private RebootSTBRequest getRebootSTBRequest(String hardwareId){
@@ -73,10 +90,10 @@ public class IRDCommandsDAOImpl implements IRDCommandsDAO {
 		request.setHardwareId(hardwareId);
 		return request;
 	}
-	
-	private ShowOSDMessageRequest getShowOSDMessageRequest(String messageText, String hardwareId){
+
+	private ShowOSDMessageRequest getShowOSDMessageRequest(String messageText, String hardwareId, boolean blocking){
 		Short sh1 = 30;
-		ShowOSDMessageRequest request = new ShowOSDMessageRequest(hardwareId, false, sh1, new Message[]{new Message("SPA", messageText)});
+		ShowOSDMessageRequest request = new ShowOSDMessageRequest(hardwareId, blocking, sh1, new Message[]{new Message("SPA", messageText)});
 		return request;
 	}
 

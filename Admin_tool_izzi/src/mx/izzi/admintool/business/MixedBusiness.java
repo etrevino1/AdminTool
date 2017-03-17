@@ -5,5 +5,6 @@ import tv.mirada.www.iris.core.types.Subscriber;
 
 public interface MixedBusiness {
 	public void activateAccount(String subscriber, String node);
+	public void deactivateAccount(String subscriber, String node);
 	public Subscriber findCPESubscriber(String hardwareId, String node) throws CPEException;
 }

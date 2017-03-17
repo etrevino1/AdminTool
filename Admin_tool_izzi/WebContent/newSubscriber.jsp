@@ -10,6 +10,7 @@
 <body>
 	<s:form method="post" namespace="/suscriptor" action="newSubscriber" >
 		<s:textfield key="label.account" name="account"></s:textfield>
+		<s:textfield key="label.region" name="region"></s:textfield>
 		<s:submit key="label.send"/>
 	</s:form>
 </body>

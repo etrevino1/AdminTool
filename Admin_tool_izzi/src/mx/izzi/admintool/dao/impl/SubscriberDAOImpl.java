@@ -14,6 +14,7 @@ import mx.izzi.admintool.dao.SubscriberDAO;
 import mx.izzi.admintool.util.DetermineNode;
 import tv.mirada.www.iris.core.subscriber.messages.ActivateSubscriberRequest;
 import tv.mirada.www.iris.core.subscriber.messages.CreateSubscriberRequest;
+import tv.mirada.www.iris.core.subscriber.messages.DeactivateSubscriberRequest;
 import tv.mirada.www.iris.core.subscriber.messages.DeleteSubscriberRequest;
 import tv.mirada.www.iris.core.subscriber.messages.FindSubscriberRequest;
 import tv.mirada.www.iris.core.subscriber.messages.FindSubscriberResponse;
@@ -67,7 +68,13 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 		return request;
 	}
 
-	private CreateSubscriberRequest createSubscriberRequest(String account){
+	private DeactivateSubscriberRequest getDeactivateSubscriberRequest(String subscriber){
+		DeactivateSubscriberRequest request = new DeactivateSubscriberRequest();
+		request.setOperatorId(new OperatorSubscriberId("IZZI", subscriber));
+		return request;
+	}
+
+	private CreateSubscriberRequest createSubscriberRequest(String account, String region){
 		CreateSubscriberRequest request = new CreateSubscriberRequest();
 		Subscriber subscriber = new Subscriber();
 		subscriber.setOperatorSubscriberId(new OperatorSubscriberId("IZZI", account));
@@ -77,6 +84,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 		subscriber.setOTTMaxDevices(new BigInteger("2"));
 		subscriber.setOTTCooldown(new BigInteger("0"));
 		subscriber.setUsage("Test");
+		subscriber.setRegionName(region);
 		request.setSubscriber(subscriber);
 		return request;
 	}
@@ -107,7 +115,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 	public Subscriber findSubscriberRequest(Long irisId){
 		return findSubscriberRequest(irisId, "mex");
 	}
-	
+
 	public Subscriber findSubscriberRequest(Long irisId, String region){
 		FindSubscriberRequest findSubscriber = findSubscriber(irisId);
 
@@ -125,7 +133,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 	public List<Subscription> findSubscriberSubscriptions(String account){
 		return findSubscriberSubscriptions(account, "mex");
 	}
-	
+
 	public List<Subscription> findSubscriberSubscriptions(String account, String node){
 		List<Subscription> suscripcion = null;
 
@@ -143,7 +151,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 	public void findSubscriberSubscriptions(Long irisId){
 
 	}
-	
+
 	public List<CustomerPremisesEquipment> findSubscriberCPEs(String account){
 		return findSubscriberCPEs(account, "mex");
 	}
@@ -162,11 +170,11 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 
 		return equipos;
 	}
-	
+
 	public void activateSubscriber(String subscriber){
 		activateSubscriber(subscriber, "mex");
 	}
-	
+
 	public void activateSubscriber(String subscriber, String node){
 		ActivateSubscriberRequest request = activateSubscriberRequest(subscriber);
 		try{
@@ -176,15 +184,26 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 		}
 	}
 
-	public boolean newSubscriber(String account){
-		return newSubscriber(account, "mex");
-	}
-	
-	public boolean newSubscriber(String account, String region){
-		CreateSubscriberRequest request = createSubscriberRequest(account);
-		logger.debug("newSubscriber @ SubscriberDAOImpl" + request);
+	@Override
+	public void deactivateSubscriber(String subscriber, String node){
+		DeactivateSubscriberRequest request = getDeactivateSubscriberRequest(subscriber);
 		try{
-			if(getStub(region).createSubscriber(request).getIrisSubscriberId() > 0)
+			getStub(node).deactivateSubscriber(request);
+		}catch(RemoteException re){
+			logger.error(re.getMessage());
+		}
+
+	}
+
+	public boolean newSubscriber(String account, String region){
+		return newSubscriber(account, region, "mex");
+	}
+
+	public boolean newSubscriber(String account, String region, String node){
+		CreateSubscriberRequest request = createSubscriberRequest(account, region);
+		logger.debug("SubscriberDAOImpl - newSubscriber" + request);
+		try{
+			if(getStub(node).createSubscriber(request).getIrisSubscriberId() > 0)
 				return true;
 		}catch(RemoteException re){
 			logger.error(re.getMessage());
@@ -195,7 +214,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 	public void deleteSubscriber(String account){
 		deleteSubscriber(account, "mex");
 	}
-	
+
 	public void deleteSubscriber(String account, String region){
 		DeleteSubscriberRequest request = deleteSubscriberRequest(account);
 		try{

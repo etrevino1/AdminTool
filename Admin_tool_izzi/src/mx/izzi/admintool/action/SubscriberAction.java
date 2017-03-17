@@ -18,7 +18,7 @@ public class SubscriberAction extends ActionSupport {
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	private SubscriberBusiness subscriberBusiness;
-	private String account = null, irisId = null, node = null;
+	private String account = null, irisId = null, node = null, region = null;
 
 	private Subscriber subscriber = null;
 	private List<Subscription> subscription = null;
@@ -48,7 +48,7 @@ public class SubscriberAction extends ActionSupport {
 	}
 	
 	public String newSubscriber(){
-		if(getSubscriberBusiness().newSubscriber(account, node))
+		if(getSubscriberBusiness().newSubscriber(account, region, node))
 			return SUCCESS;
 		return ERROR;
 	}
@@ -119,6 +119,10 @@ public class SubscriberAction extends ActionSupport {
 
 	public void setNode(String node) {
 		this.node = node;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
 	}
 
 }
