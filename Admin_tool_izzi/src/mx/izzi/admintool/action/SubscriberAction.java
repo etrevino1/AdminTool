@@ -55,6 +55,9 @@ public class SubscriberAction extends ActionSupport {
 	
 	public String deleteSubscriber(){
 		getSubscriberBusiness().deleteSubscriber((String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account"), node);
+		((Map<String, ?>)ActionContext.getContext().get("session")).remove("account");
+		account = null;
+
 		return SUCCESS;
 	}
 
