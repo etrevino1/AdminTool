@@ -53,6 +53,8 @@ public class CpeDAOImpl implements CpeDAO {
 
 		try{
 			getStub(node).createCustomerPremisesEquipment(request);
+		}catch(AxisFault af){
+			log.error(af.getFaultString() + ": " +af.getFaultDetails()[0].getTextContent());
 		}catch(RemoteException re){
 			log.error(re.getMessage());
 			return false;
