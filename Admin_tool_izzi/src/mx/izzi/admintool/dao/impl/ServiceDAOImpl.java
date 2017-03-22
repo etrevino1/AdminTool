@@ -79,10 +79,6 @@ public class ServiceDAOImpl implements ServiceDAO{
 		return request;
 	}
 	
-	private ServicesSoap11Stub getStub(){
-		return getStub("mex");
-	}
-	
 	private ServicesSoap11Stub getStub(String node){
 		ServicesSoap11Stub ss = null;
 		ServicesServiceLocator locator = new ServicesServiceLocator();

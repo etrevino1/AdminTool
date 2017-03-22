@@ -97,10 +97,6 @@ public class IRDCommandsDAOImpl implements IRDCommandsDAO {
 		return request;
 	}
 
-	private IrdSoap11Stub getStub(){
-		return getStub("mex");
-	}
-
 	private IrdSoap11Stub getStub(String node){
 		try{
 			return new IrdSoap11Stub(new URL(DetermineNode.getService(node, "ird")), new IrdServiceLocator());

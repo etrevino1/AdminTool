@@ -224,19 +224,6 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 		}
 	}
 
-	private SubscribersSoap11Stub getStub(){
-		SubscribersSoap11Stub ss = null;
-		serviceLocator = new SubscribersServiceLocator();
-		try{
-			ss = new SubscribersSoap11Stub(new URL(serviceLocator.getSubscribersSoap11Address()), serviceLocator);
-		}catch(AxisFault _e){
-			logger.error(_e.getMessage());
-		}catch(MalformedURLException _URLe){
-			logger.error(_URLe.getMessage());
-		}
-		return ss;
-	}
-
 	private SubscribersSoap11Stub getStub(String node){
 		SubscribersSoap11Stub ss = null;
 		serviceLocator = new SubscribersServiceLocator();
