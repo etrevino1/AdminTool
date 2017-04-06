@@ -19,7 +19,7 @@ public class IRDAction extends ActionSupport {
 	static final long serialVersionUID = 741852963;
 
 	private Logger logger = Logger.getLogger(this.getClass());
-	
+
 	private String hardwareId = null;
 
 	private MixedBusiness mixedBusiness = null;
@@ -46,7 +46,7 @@ public class IRDAction extends ActionSupport {
 		mixedBusiness.deactivateAccount((String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account"), (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
 		return SUCCESS;
 	}
-	
+
 	@Action(
 			value="showMessage",
 			results={
@@ -56,6 +56,30 @@ public class IRDAction extends ActionSupport {
 	public String sendMessage(){
 		logger.debug("Prueba de comunicación, " + hardwareId + ", " + (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
 		iRDBusiness.sendMessage("Prueba de comunicación", hardwareId, false, (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
+		return SUCCESS;
+	}
+
+	@Action(
+			value="reboot",
+			results={
+					@Result(name="success", location="../findSubscriber", type="redirectAction")
+			}
+			)
+	public String rebootSTB(){
+		logger.debug("IRDAction - rebootSTB");
+		iRDBusiness.rebootSTB(hardwareId, (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
+		return SUCCESS;
+	}
+	
+	@Action(
+			value="restore",
+			results={
+					@Result(name="success", location="../findSubscriber", type="redirectAction")
+			}
+			)
+	public String restoreSTB(){
+		logger.debug("IRDAction - restoreSTB");
+		iRDBusiness.restoreSTB(hardwareId, "FULL", (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node"));
 		return SUCCESS;
 	}
 

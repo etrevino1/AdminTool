@@ -168,12 +168,24 @@ table.list, table.list td, table.list th {
 			</tr>
 			<c:forEach items="${equipments}" var="current">
 				<tr>
-					<td><s:url id="deleteCPE" namespace="/cpe" action="deleteCPE">
+					<td>
+						<s:url id="deleteCPE" namespace="/cpe" action="deleteCPE">
 							<s:param name="irisId">${current.irisId}</s:param>
 							<s:param name="account">${account}</s:param>
-						</s:url> <s:url id="sendMessage" namespace="/ird" action="showMessage">
+						</s:url> 
+						<s:url id="sendMessage" namespace="/ird" action="showMessage">
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
-						</s:url> <s:a href="%{deleteCPE}">Delete</s:a> <s:a href="%{sendMessage}">Message</s:a>
+						</s:url> 
+						<s:url id="rebootSTB" namespace="/ird" action="reboot">
+							<s:param name="hardwareId">${current.hardwareId}</s:param>
+						</s:url> 
+						<s:url id="restoreSTB" namespace="/ird" action="restore">
+							<s:param name="hardwareId">${current.hardwareId}</s:param>
+						</s:url>
+						<s:a href="%{deleteCPE}">Delete</s:a> 
+						<s:a href="%{sendMessage}">Message</s:a>
+						<s:a href="%{rebootSTB}">Reboot</s:a>
+						<s:a href="%{restoreSTB}">Restore</s:a>
 					</td>
 					<td>${current.irisId}</td>
 					<td>${current.hardwareId}</td>

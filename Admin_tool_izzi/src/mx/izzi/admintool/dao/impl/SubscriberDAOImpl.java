@@ -107,6 +107,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 			subscriber = findSubscriberResponse.getSubscriber();
 		}catch(RemoteException re){
 			logger.error(re.getMessage());
+			re.printStackTrace();
 		}
 		logger.debug("Subscriber: " + subscriber);
 		return subscriber;
@@ -125,6 +126,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 			subscriber = findSubscriberResponse.getSubscriber();
 		}catch(RemoteException re){
 			logger.error(re.getMessage());
+			re.printStackTrace();
 		}
 		logger.debug("Subscriber: " + subscriber);
 		return subscriber;
@@ -142,7 +144,8 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 			FindSubscribersSubscriptionsResponse response = getStub(node).findSubscribersSubscriptions(request);
 			suscripcion = response.getSubscription();
 		}catch(RemoteException re){
-			logger.debug(re.getCause());
+			logger.debug(re.getMessage());
+			re.printStackTrace();
 		}
 		logger.debug("Subscriptions: " + suscripcion);
 		return suscripcion;
@@ -165,6 +168,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 			equipos = response.getCustomerPremisesEquipments();
 		}catch(RemoteException re){
 			logger.error(re.getMessage());
+			re.printStackTrace();
 		}
 		logger.debug("Equipos: " + equipos);
 
@@ -180,7 +184,8 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 		try{
 			getStub(node).activateSubscriber(request);
 		}catch(RemoteException re){
-			logger.debug(re.getStackTrace());
+			logger.error(re.getStackTrace());
+			re.printStackTrace();
 		}
 	}
 
@@ -191,6 +196,8 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 			getStub(node).deactivateSubscriber(request);
 		}catch(RemoteException re){
 			logger.error(re.getMessage());
+			logger.error(re.getCause());
+			logger.error(re.getStackTrace());
 		}
 
 	}
@@ -207,6 +214,8 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 				return true;
 		}catch(RemoteException re){
 			logger.error(re.getMessage());
+			logger.error(re.getCause());
+			logger.error(re.getStackTrace());
 		}
 		return false;
 	}
@@ -221,6 +230,8 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 			getStub(region).deleteSubscriber(request);
 		}catch(RemoteException re){
 			logger.error(re.getMessage());
+			logger.error(re.getCause());
+			logger.error(re.getStackTrace());
 		}
 	}
 
@@ -236,6 +247,8 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 			logger.error(_URLe.getMessage());
 		}catch(Exception e){
 			logger.error(e.getMessage());
+			logger.error(e.getCause());
+			logger.error(e.getStackTrace());
 		}
 		return ss;
 	}

@@ -15,7 +15,7 @@
 			<result name="success">subscriber.jsp</result>
 		</action>
 		<action name="locale" class="localeAction">
-			<result name="SUCCESS" type="redirectAction">findSubscriber</result>
+			<result name="success" type="redirectAction">findSubscriber</result>
 		</action>
 		<action name="luhn" class="miradaEquipoAction">
 			<result name="success">luhn.jsp</result>
