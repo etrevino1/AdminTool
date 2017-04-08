@@ -15,15 +15,11 @@ public class AdminToolRealm extends RealmBase {
 	@Override
 	protected String getName() {
 		return this.getClass().getSimpleName();
-		// TODO Auto-generated method stub
-//		return null;
 	}
 
 	@Override
 	protected String getPassword(final String username) {
 		return "test1234";
-		// TODO Auto-generated method stub
-//		return null;
 	}
 
 	@Override
@@ -33,8 +29,6 @@ public class AdminToolRealm extends RealmBase {
 		roles.add("tomcat");
 		log.debug(new GenericPrincipal(username, "test123", roles));
 		return new GenericPrincipal(username, "test123", roles);
-		// TODO Auto-generated method stub
-//		return null;
 	}
 
 	

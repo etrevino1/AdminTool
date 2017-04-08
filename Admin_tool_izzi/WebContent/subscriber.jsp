@@ -88,7 +88,7 @@ table.list, table.list td, table.list th {
 						<s:param name="account">${account}</s:param>
 					</s:url> 
 					<s:url id="activate" namespace="/ird" action="activateAccount">
-						<s:param name="subscriber">${account}</s:param>
+						
 					</s:url> 
 					<s:url id="deactivate" namespace="/ird" action="deactivateAccount">
 						<s:param name="subscriber">${account}</s:param>
@@ -182,10 +182,14 @@ table.list, table.list td, table.list th {
 						<s:url id="restoreSTB" namespace="/ird" action="restore">
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
 						</s:url>
+						<s:url id="enableSTB" namespace="/ird" action="enable">
+							<s:param name="hardwareId">${current.hardwareId}</s:param>
+						</s:url>
 						<s:a href="%{deleteCPE}">Delete</s:a> 
 						<s:a href="%{sendMessage}">Message</s:a>
 						<s:a href="%{rebootSTB}">Reboot</s:a>
 						<s:a href="%{restoreSTB}">Restore</s:a>
+						<s:a href="%{enableSTB}">Enable</s:a>
 					</td>
 					<td>${current.irisId}</td>
 					<td>${current.hardwareId}</td>

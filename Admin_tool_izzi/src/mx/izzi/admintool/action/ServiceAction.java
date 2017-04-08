@@ -5,13 +5,15 @@ import mx.izzi.admintool.business.ServiceBusiness;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.SessionAware;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ServiceAction extends ActionSupport {
+public class ServiceAction extends ActionSupport implements SessionAware {
 	static final long serialVersionUID = 1L;
 	private Logger log = Logger.getLogger(this.getClass());
+	
+	private Map<String, Object> session = null;
 	
 	private ServiceBusiness serviceBusiness;
 	
@@ -32,8 +34,8 @@ public class ServiceAction extends ActionSupport {
 	}
 	
 	public void validate(){
-		account = (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account");
-		node = (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node");
+		account = (String)session.get("account");
+		node = (String)session.get("node");
 	}
 	
 	public void setIrisPackage(String irisPackage) {
@@ -50,5 +52,10 @@ public class ServiceAction extends ActionSupport {
 	
 	public void setServiceBusiness(ServiceBusiness serviceBusiness) {
 		this.serviceBusiness = serviceBusiness;
+	}
+
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
 	}
 }

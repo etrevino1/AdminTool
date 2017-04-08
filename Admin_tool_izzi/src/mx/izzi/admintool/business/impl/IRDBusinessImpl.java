@@ -16,8 +16,16 @@ public class IRDBusinessImpl implements IRDBusiness {
 	@Override
 	public void enableCPE(CustomerPremisesEquipment equipo, String node){
 		if(equipo.getHardwareId().length() == 16){
-			iRDCommandsDAO.enableSTB(equipo.getHardwareId(), node);
-			iRDCommandsDAO.rebootSTB(equipo.getHardwareId(), node);
+			enableSTB(equipo.getHardwareId(), node);
+			rebootSTB(equipo.getHardwareId(), node);
+		}
+	}
+	
+	@Override
+	public void enableSTB(String hardwareId, String node){
+		logger.debug("IRDBusinessImpl - enableSTB: " + hardwareId);
+		if(hardwareId.length() == 16){
+			iRDCommandsDAO.enableSTB(hardwareId, node);
 		}
 	}
 
@@ -48,4 +56,5 @@ public class IRDBusinessImpl implements IRDBusiness {
 	public void setiRDCommandsDAO(IRDCommandsDAO iRDCommandsDAO) {
 		this.iRDCommandsDAO = iRDCommandsDAO;
 	}
+
 }

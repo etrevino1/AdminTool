@@ -5,19 +5,20 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.interceptor.SessionAware;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 
 import mx.izzi.admintool.business.CpeBusiness;
 import mx.izzi.admintool.business.MixedBusiness;
 import mx.izzi.admintool.exception.CPEException;
 import tv.mirada.www.iris.core.types.Subscriber;
 
-public class CpeAction extends ActionSupport {
+public class CpeAction extends ActionSupport implements SessionAware{
 	static final long serialVersionUID = 1L;
 	private Logger log = Logger.getLogger(this.getClass());
+	
+	private Map<String, Object> session = null;
 
 	private String irisId = null, account = null, hardwareId = null, type = null, node = null;
 
@@ -51,7 +52,7 @@ public class CpeAction extends ActionSupport {
 		if(hardwareId != null){
 			try{
 				Subscriber subscriber = mixedBusiness.findCPESubscriber(hardwareId, node);
-				((Map<String, String>)ActionContext.getContext().get("session")).put("account", subscriber.getOperatorSubscriberId().getId());
+				session.put("account", subscriber.getOperatorSubscriberId().getId());
 			}catch(CPEException cpee){
 				return ERROR;
 			}
@@ -63,9 +64,9 @@ public class CpeAction extends ActionSupport {
 
 	public void validate(){
 		log.debug("CpeAction - validate");
-		account = (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account");
+		account = (String)session.get("account");
 		if(node == null)
-			node = (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("node");
+			node = (String)session.get("node");
 		log.debug("account: " + account);
 		log.debug("node: " + node);
 	}
@@ -103,5 +104,10 @@ public class CpeAction extends ActionSupport {
 
 	public void setNode(String node){
 		this.node = node;
+	}
+
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
 	}
 }

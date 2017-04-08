@@ -4,18 +4,22 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.SessionAware;
 
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 import tv.mirada.www.iris.core.types.Subscriber;
 import tv.mirada.www.iris.core.types.Subscription;
 import mx.izzi.admintool.business.SubscriberBusiness;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class SubscriberAction extends ActionSupport {
+public class SubscriberAction extends ActionSupport implements SessionAware{
+
+	static final long serialVersionUID = 74185458763L;
 
 	private Logger logger = Logger.getLogger(this.getClass());
+
+	private Map<String, Object> session = null;
 
 	private SubscriberBusiness subscriberBusiness;
 	private String account = null, irisId = null, node = null, region = null;
@@ -27,11 +31,11 @@ public class SubscriberAction extends ActionSupport {
 	@Override
 	public String execute () {
 		logger.debug("SubscriberAction - execute : " + account + ", " + irisId + ", " + node);
-		
+
 		if(account == null && irisId == null){
 			return SUCCESS;
 		}
-		
+
 		if(account != null && account.length() > 0){
 			subscriber = getSubscriberBusiness().findSubscriber(account, node);
 		}else if (irisId != null && irisId.length() > 0){
@@ -42,52 +46,62 @@ public class SubscriberAction extends ActionSupport {
 			subscription = getSubscriberBusiness().getSubscriptions(account, node);
 			equipments = getSubscriberBusiness().getCPEs(account, node);
 		}
-		((Map<String, String>)ActionContext.getContext().get("session")).put("account", account);
-		((Map<String, String>)ActionContext.getContext().get("session")).put("node", node);
+		session.put("account", account);
+		session.put("node", node);
 		return SUCCESS;
 	}
-	
+
 	public String newSubscriber(){
 		if(getSubscriberBusiness().newSubscriber(account, region, node))
 			return SUCCESS;
 		return ERROR;
 	}
-	
+
 	public String deleteSubscriber(){
-		getSubscriberBusiness().deleteSubscriber((String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account"), node);
-		((Map<String, ?>)ActionContext.getContext().get("session")).remove("account");
+		getSubscriberBusiness().deleteSubscriber((String)session.get("account"), node);
+		session.remove("account");
 		account = null;
 
 		return SUCCESS;
 	}
 
 	public void validate(){
-		logger.debug("Node=" + node);
-		if(node == null || node == ""){
-			node = "mex";
+
+		logger.debug("SubscriberAction - execute - session" + session);
+
+		if(session != null ){
+			logger.debug("valid");
+			logger.debug("Node=" + node);
+			if(node == null || node == ""){
+				node = "mex";
+			}
+			logger.debug("Account=" + account);
+			if(account == null){
+				account = (String)session.get("account");
+			}
+		}else{
+			logger.debug("Not valid");
 		}
-		logger.debug("Account=" + account);
-		if(account == null){
-			account = (String)((Map<String, ?>)ActionContext.getContext().get("session")).get("account");
-		}
+		
+
 	}
-	
+
 	public List<Subscription> getSubscription() {
 		return subscription;
 	}
-	
+
 	public void setSubscription(List<Subscription> suscription) {
 		this.subscription = suscription;
 	}
-	
+
 	public Subscriber getSubscriber() {
 		return subscriber;
 	}
-	
+
 	public void setSubscriber(Subscriber subscriber) {
 		this.subscriber = subscriber;
 	}
-	
+
 	public List<CustomerPremisesEquipment> getEquipments() {
 		return equipments;
 	}
@@ -126,6 +140,12 @@ public class SubscriberAction extends ActionSupport {
 
 	public void setRegion(String region) {
 		this.region = region;
+	}
+
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
+
 	}
 
 }
