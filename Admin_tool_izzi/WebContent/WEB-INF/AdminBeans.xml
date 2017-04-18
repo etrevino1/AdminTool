@@ -10,6 +10,24 @@
 		scope="prototype">
 	</bean>
 
+	<!-- Logging in DB -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.gjt.mm.mysql.Driver" />
+		<property name="url" value="jdbc:mysql://10.25.11.111:3306/tomcat_realm" />
+		<property name="username" value="root" />
+		<property name="password" value="June2006!!" />
+	</bean>
+
+	<!-- Logging util -->
+	<bean id="logUserOperationDAO" class="mx.izzi.admintool.dblog.dao.impl.LogUserOperationDAOImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<bean id="logUserOperationBusiness" class="mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl">
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
+	</bean>
+
 	<!-- Subscriber -->
 	<bean id="subscriberDAO" class="mx.izzi.admintool.dao.impl.SubscriberDAOImpl"
 		scope="prototype">
@@ -22,6 +40,7 @@
 	<bean id="subscriberAction" class="mx.izzi.admintool.action.SubscriberAction"
 		scope="prototype">
 		<property name="subscriberBusiness" ref="subscriberBusiness" />
+		<property name="mixedBusiness" ref="mixedBusiness"></property>
 	</bean>
 
 
@@ -32,6 +51,7 @@
 
 	<bean id="serviceBusiness" class="mx.izzi.admintool.business.impl.ServiceBusinessImpl">
 		<property name="serviceDAO" ref="serviceDAO"></property>
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
 
 	<bean id="serviceAction" class="mx.izzi.admintool.action.ServiceAction"
@@ -46,6 +66,7 @@
 
 	<bean id="cpeBusiness" class="mx.izzi.admintool.business.impl.CpeBusinessImpl">
 		<property name="cpeDAO" ref="cpeDAO"></property>
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
 
 	<bean id="cpeAction" class="mx.izzi.admintool.action.CpeAction"
@@ -81,16 +102,10 @@
 		<property name="subscriberBusiness" ref="subscriberBusiness"></property>
 		<property name="iRDBusiness" ref="iRDBusiness"></property>
 		<property name="cpeBusiness" ref="cpeBusiness"></property>
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
 
-	<!-- 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-	</bean>
-	<context:property-placeholder location="jdbc.properties" />
-	 -->
+ 
+
+
 </beans>

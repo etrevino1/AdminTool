@@ -4,16 +4,20 @@ import mx.izzi.admintool.business.ServiceBusiness;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ServiceAction extends ActionSupport implements SessionAware {
+public class ServiceAction extends ActionSupport implements SessionAware, ServletRequestAware {
 	static final long serialVersionUID = 1L;
 	private Logger log = Logger.getLogger(this.getClass());
 	
 	private Map<String, Object> session = null;
+	private HttpServletRequest request = null;
 	
 	private ServiceBusiness serviceBusiness;
 	
@@ -21,7 +25,7 @@ public class ServiceAction extends ActionSupport implements SessionAware {
 	
 	public String execute(){
 		log.debug("Service iris Id" + irisId);
-		this.serviceBusiness.deletePackage(irisId, node);
+		this.serviceBusiness.deletePackage(irisId, node,request.getUserPrincipal().getName());
 		irisId=null;
 		return SUCCESS;
 	}
@@ -29,7 +33,7 @@ public class ServiceAction extends ActionSupport implements SessionAware {
 	public String addPackage(){
 		log.debug("Service irisPackage:" + irisPackage);
 		log.debug("Service account:" + account);
-		this.serviceBusiness.addPackage(account, irisPackage, node);
+		this.serviceBusiness.addPackage(account, irisPackage, node, request.getUserPrincipal().getName());
 		return SUCCESS;
 	}
 	
@@ -57,5 +61,9 @@ public class ServiceAction extends ActionSupport implements SessionAware {
 	@Override
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
+	}
+	@Override
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
 	}
 }

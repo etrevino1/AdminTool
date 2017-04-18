@@ -35,14 +35,14 @@ public class SubscriberBusinessImpl implements SubscriberBusiness{
 	
 	@Override
 	public Subscriber findSubscriber(Long irisId, String node){
-		logger.debug("SubscriberBusiness - FinsSubscriber(irisId)" + " - " + node);
+		logger.debug("SubscriberBusiness - FindSubscriber(irisId)" + " - " + node);
 		return this.getSubscriberDAO().findSubscriberRequest(irisId, node);
 	}
 
 	@Override
-	public void activateSubscriber(String subscriber, String node){
+	public void activateSubscriber(String account, String node){
 		logger.debug("SubscriberBusiness - activateSubscriber(subscriber)" + " - " + node);
-		this.getSubscriberDAO().activateSubscriber(subscriber, node);
+		this.getSubscriberDAO().activateSubscriber(account, node);
 	}
 	
 	@Override
@@ -70,5 +70,4 @@ public class SubscriberBusinessImpl implements SubscriberBusiness{
 	public void setSubscriberDAO(SubscriberDAO subscriberDAO) {
 		this.subscriberDAO = subscriberDAO;
 	}
-	
 }

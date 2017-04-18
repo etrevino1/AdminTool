@@ -4,7 +4,7 @@ import mx.izzi.admintool.exception.CPEException;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 
 public interface CpeBusiness {
-	public boolean deleteCPE(String irisId, String node);
-	public boolean addCPE(String account, String hardwareId, String type, String node);
+	public boolean deleteCPE(String irisId, String node, String user);
+	public boolean addCPE(String account, String hardwareId, String type, String node, String user);
 	public CustomerPremisesEquipment findCPE(String hardwareId, String node) throws CPEException;
 }

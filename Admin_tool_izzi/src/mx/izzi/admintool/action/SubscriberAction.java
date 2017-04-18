@@ -3,25 +3,36 @@ package mx.izzi.admintool.action;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 import tv.mirada.www.iris.core.types.Subscriber;
 import tv.mirada.www.iris.core.types.Subscription;
+import mx.izzi.admintool.business.MixedBusiness;
 import mx.izzi.admintool.business.SubscriberBusiness;
+import mx.izzi.admintool.dto.IzziTvClientDTO;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class SubscriberAction extends ActionSupport implements SessionAware{
+public class SubscriberAction extends ActionSupport implements SessionAware, ServletRequestAware {
 
 	static final long serialVersionUID = 74185458763L;
 
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	private Map<String, Object> session = null;
+	HttpServletRequest request = null;
 
 	private SubscriberBusiness subscriberBusiness;
+	private MixedBusiness mixedBusiness;
+	public void setMixedBusiness(MixedBusiness mixedBusiness) {
+		this.mixedBusiness = mixedBusiness;
+	}
+
 	private String account = null, irisId = null, node = null, region = null;
 
 	private Subscriber subscriber = null;
@@ -31,20 +42,21 @@ public class SubscriberAction extends ActionSupport implements SessionAware{
 	@Override
 	public String execute () {
 		logger.debug("SubscriberAction - execute : " + account + ", " + irisId + ", " + node);
-
 		if(account == null && irisId == null){
 			return SUCCESS;
 		}
-
+		IzziTvClientDTO client = null;
+		String user = request.getUserPrincipal().getName();
 		if(account != null && account.length() > 0){
-			subscriber = getSubscriberBusiness().findSubscriber(account, node);
+			client = mixedBusiness.getClient(account, node, user);
 		}else if (irisId != null && irisId.length() > 0){
-			subscriber = getSubscriberBusiness().findSubscriber(Long.parseLong(irisId), node);
-			account = subscriber.getOperatorSubscriberId().getId();
+			client = mixedBusiness.getClient(Long.parseLong(irisId), node, user);
+			account = client.getSubscriber().getOperatorSubscriberId().getId();
 		}
-		if(subscriber != null){
-			subscription = getSubscriberBusiness().getSubscriptions(account, node);
-			equipments = getSubscriberBusiness().getCPEs(account, node);
+		if(client != null){
+			subscriber = client.getSubscriber();
+			subscription = client.getSubscription();
+			equipments = client.getEquipment();
 		}
 		session.put("account", account);
 		session.put("node", node);
@@ -147,5 +159,12 @@ public class SubscriberAction extends ActionSupport implements SessionAware{
 		this.session = session;
 
 	}
+
+	@Override
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+		
+	}
+
 
 }

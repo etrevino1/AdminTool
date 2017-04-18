@@ -4,10 +4,11 @@ import org.apache.log4j.Logger;
 
 import mx.izzi.admintool.business.IRDBusiness;
 import mx.izzi.admintool.dao.IRDCommandsDAO;
+import mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl;
 import tv.mirada.www.iris.core.ird.messages.RestoreClass;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 
-public class IRDBusinessImpl implements IRDBusiness {
+public class IRDBusinessImpl extends LogUserOperationBusinessImpl implements IRDBusiness {
 
 	private Logger logger= Logger.getLogger(this.getClass());
 	

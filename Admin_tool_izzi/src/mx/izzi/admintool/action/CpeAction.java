@@ -2,9 +2,12 @@ package mx.izzi.admintool.action;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -14,11 +17,12 @@ import mx.izzi.admintool.business.MixedBusiness;
 import mx.izzi.admintool.exception.CPEException;
 import tv.mirada.www.iris.core.types.Subscriber;
 
-public class CpeAction extends ActionSupport implements SessionAware{
+public class CpeAction extends ActionSupport implements SessionAware, ServletRequestAware{
 	static final long serialVersionUID = 1L;
 	private Logger log = Logger.getLogger(this.getClass());
 	
 	private Map<String, Object> session = null;
+	private HttpServletRequest request = null;
 
 	private String irisId = null, account = null, hardwareId = null, type = null, node = null;
 
@@ -27,7 +31,7 @@ public class CpeAction extends ActionSupport implements SessionAware{
 
 	public String execute(){
 		log.debug("CPE iris Id: " + irisId);
-		this.cpeBusiness.deleteCPE(irisId, node);
+		this.cpeBusiness.deleteCPE(irisId, node, request.getUserPrincipal().getName());
 		irisId=null;
 		return SUCCESS;
 	}
@@ -36,7 +40,7 @@ public class CpeAction extends ActionSupport implements SessionAware{
 		log.debug("CPE HardwareId " + hardwareId);
 		log.debug("CPE Type " + type);
 
-		this.cpeBusiness.addCPE(account, hardwareId, type, node);
+		this.cpeBusiness.addCPE(account, hardwareId, type, node, request.getUserPrincipal().getName());
 
 		return SUCCESS;
 	}
@@ -51,7 +55,7 @@ public class CpeAction extends ActionSupport implements SessionAware{
 
 		if(hardwareId != null){
 			try{
-				Subscriber subscriber = mixedBusiness.findCPESubscriber(hardwareId, node);
+				Subscriber subscriber = mixedBusiness.findCPESubscriber(hardwareId, node, request.getUserPrincipal().getName());
 				session.put("account", subscriber.getOperatorSubscriberId().getId());
 			}catch(CPEException cpee){
 				return ERROR;
@@ -109,5 +113,9 @@ public class CpeAction extends ActionSupport implements SessionAware{
 	@Override
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
+	}
+	@Override
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
 	}
 }

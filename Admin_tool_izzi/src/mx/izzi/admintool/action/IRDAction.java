@@ -2,10 +2,13 @@ package mx.izzi.admintool.action;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -14,14 +17,15 @@ import mx.izzi.admintool.business.IRDBusiness;
 import mx.izzi.admintool.business.MixedBusiness;
 
 @Namespace("/ird")
-public class IRDAction extends ActionSupport implements SessionAware {
+public class IRDAction extends ActionSupport implements SessionAware, ServletRequestAware {
 
 	static final long serialVersionUID = 741852963;
 
 	private Logger logger = Logger.getLogger(this.getClass());
 	
 	private Map<String, Object> session = null;
-
+	private HttpServletRequest request = null;
+	
 	private String hardwareId = null;
 
 	private MixedBusiness mixedBusiness = null;
@@ -36,7 +40,7 @@ public class IRDAction extends ActionSupport implements SessionAware {
 	public String execute(){
 		logger.debug("IRDAction - execute");
 		if(session != null){
-			mixedBusiness.activateAccount((String)session.get("account"), (String)session.get("node"));
+			mixedBusiness.activateAccount((String)session.get("account"), (String)session.get("node"), request.getUserPrincipal().getName());
 			logger.debug("valid session");
 		}else{
 			logger.debug("not-valid session");
@@ -53,7 +57,7 @@ public class IRDAction extends ActionSupport implements SessionAware {
 			}
 			)
 	public String deactivateAccount(){
-		mixedBusiness.deactivateAccount((String)session.get("account"), (String)session.get("node"));
+		mixedBusiness.deactivateAccount((String)session.get("account"), (String)session.get("node"), request.getUserPrincipal().getName());
 		return SUCCESS;
 	}
 
@@ -129,6 +133,11 @@ public class IRDAction extends ActionSupport implements SessionAware {
 	public void setSession(Map<String, Object> session) {
 		logger.debug("IRDAction - Set session");
 		this.session = session;
+	}
+
+	@Override
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
 	}
 
 }

@@ -1,26 +1,32 @@
 package mx.izzi.admintool.business.impl;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 import org.apache.log4j.Logger;
 
 import mx.izzi.admintool.business.CpeBusiness;
 import mx.izzi.admintool.dao.CpeDAO;
+import mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl;
+import mx.izzi.admintool.dblog.dto.LogUserOperationDTO;
 import mx.izzi.admintool.exception.CPEException;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 
-public class CpeBusinessImpl implements CpeBusiness {
+public class CpeBusinessImpl extends LogUserOperationBusinessImpl implements CpeBusiness {
 
 	private Logger log = Logger.getLogger(this.getClass());
 	
 	private CpeDAO cpeDAO = null;
 	
 	@Override
-	public boolean deleteCPE(String irisId, String node) {
+	public boolean deleteCPE(String irisId, String node, String user) {
 		log.debug("Delete CPE:" + irisId);
+		logUserOperation(new LogUserOperationDTO(user, "delete", "delCPE: " + irisId, new Timestamp(Calendar.getInstance().getTimeInMillis())));
 		return this.cpeDAO.deleteCPE(irisId, node);
 	}
 	
 	@Override
-	public boolean addCPE(String account, String hardwareId, String type, String node) {
+	public boolean addCPE(String account, String hardwareId, String type, String node, String user) {
 		log.debug("Add CPE:" + hardwareId);
 		return this.cpeDAO.addCPE(account, hardwareId, type, node);
 	}
