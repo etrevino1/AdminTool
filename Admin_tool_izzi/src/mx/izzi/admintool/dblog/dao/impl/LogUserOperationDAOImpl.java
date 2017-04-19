@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import mx.izzi.admintool.dblog.dao.LogUserOperationDAO;
-import mx.izzi.admintool.dblog.dao.sp.LogUserOperationSP;
 import mx.izzi.admintool.dblog.dto.LogUserOperationDTO;
+import mx.izzi.admintool.sp.LogUserOperationSP;
 
 public class LogUserOperationDAOImpl implements LogUserOperationDAO{
 	

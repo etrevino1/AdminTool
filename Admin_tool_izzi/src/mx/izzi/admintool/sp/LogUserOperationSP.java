@@ -1,4 +1,4 @@
-package mx.izzi.admintool.dblog.dao.sp;
+package mx.izzi.admintool.sp;
 
 import java.util.HashMap;
 import java.util.Map;

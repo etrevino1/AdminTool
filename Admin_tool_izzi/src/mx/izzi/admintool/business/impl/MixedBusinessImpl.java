@@ -76,7 +76,7 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 		}
 		
 		//deactivateSubscriber
-		logUserOperation(new LogUserOperationDTO(user, "activate", "activateAccount : " + account, new Timestamp(Calendar.getInstance().getTimeInMillis())));
+		logUserOperation(new LogUserOperationDTO(user, "deactivate", "deactivateAccount : " + account, new Timestamp(Calendar.getInstance().getTimeInMillis())));
 		subscriberBusiness.deactivateSubscriber(account, node);
 	}
 

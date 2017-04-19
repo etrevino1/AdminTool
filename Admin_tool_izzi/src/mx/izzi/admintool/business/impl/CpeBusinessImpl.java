@@ -28,6 +28,7 @@ public class CpeBusinessImpl extends LogUserOperationBusinessImpl implements Cpe
 	@Override
 	public boolean addCPE(String account, String hardwareId, String type, String node, String user) {
 		log.debug("Add CPE:" + hardwareId);
+		logUserOperation(new LogUserOperationDTO(user, "add", "addCPE: " + hardwareId, new Timestamp(Calendar.getInstance().getTimeInMillis())));
 		return this.cpeDAO.addCPE(account, hardwareId, type, node);
 	}
 	
