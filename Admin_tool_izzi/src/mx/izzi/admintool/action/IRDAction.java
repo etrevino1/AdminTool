@@ -69,7 +69,7 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String sendMessage(){
 		logger.debug("Prueba de comunicación, " + hardwareId + ", " + (String)session.get("node"));
-		iRDBusiness.sendMessage("Prueba de comunicación", hardwareId, false, (String)session.get("node"));
+		iRDBusiness.sendMessage("Prueba de comunicación", hardwareId, false, (String)session.get("node"), request.getUserPrincipal().getName());
 		return SUCCESS;
 	}
 
@@ -81,7 +81,7 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String rebootSTB(){
 		logger.debug("IRDAction - rebootSTB");
-		iRDBusiness.rebootSTB(hardwareId, (String)session.get("node"));
+		iRDBusiness.rebootSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
 		return SUCCESS;
 	}
 	
@@ -93,7 +93,7 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String restoreSTB(){
 		logger.debug("IRDAction - restoreSTB");
-		iRDBusiness.restoreSTB(hardwareId, "FULL", (String)session.get("node"));
+		iRDBusiness.restoreSTB(hardwareId, "FULL", (String)session.get("node"), request.getUserPrincipal().getName());
 		return SUCCESS;
 	}
 	
@@ -105,10 +105,22 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String enableSTB(){
 		logger.debug("IRDAction - enableSTB: " + hardwareId);
-		iRDBusiness.enableSTB(hardwareId, (String)session.get("node"));
+		iRDBusiness.enableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
 		return SUCCESS;
 	}
 
+	@Action(
+			value="disable",
+			results={
+					@Result(name="success", location="../findSubscriber", type="redirectAction")
+			}
+			)
+	public String disableSTB(){
+		logger.debug("IRDAction - disableSTB: " + hardwareId);
+		iRDBusiness.disableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+		return SUCCESS;
+	}
+	
 	public void setMixedBusiness(MixedBusiness mixedBusiness) {
 		this.mixedBusiness = mixedBusiness;
 	}

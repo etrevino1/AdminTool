@@ -64,13 +64,13 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 	}
 
 	public String newSubscriber(){
-		if(getSubscriberBusiness().newSubscriber(account, region, node))
+		if(getSubscriberBusiness().newSubscriber(account, region, node, request.getUserPrincipal().getName()))
 			return SUCCESS;
 		return ERROR;
 	}
 
 	public String deleteSubscriber(){
-		getSubscriberBusiness().deleteSubscriber((String)session.get("account"), node);
+		getSubscriberBusiness().deleteSubscriber((String)session.get("account"), node, request.getUserPrincipal().getName());
 		session.remove("account");
 		account = null;
 

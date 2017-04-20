@@ -35,6 +35,7 @@
 
 	<bean id="subscriberBusiness" class="mx.izzi.admintool.business.impl.SubscriberBusinessImpl">
 		<property name="subscriberDAO" ref="subscriberDAO"></property>
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
 
 	<bean id="subscriberAction" class="mx.izzi.admintool.action.SubscriberAction"
