@@ -26,17 +26,8 @@ public class LogAction extends ActionSupport implements SessionAware {
 	private List<LogUserOperationDTO> logs = null;
 	private String user = "";
 	
-	public void setUser(String user) {
-		this.user = user;
-	}
-
 	private LogUserOperationBusiness logUserOperationBusiness = null;
-	
-	public void setLogUserOperationBusiness(LogUserOperationBusiness logUserOperationBusiness) {
-		this.logUserOperationBusiness = logUserOperationBusiness;
-	}
 
-	
 	@Action(
 			value="viewLog" ,
 			results={
@@ -50,10 +41,8 @@ public class LogAction extends ActionSupport implements SessionAware {
 			
 		}
 		logs = logUserOperationBusiness.getLogUserOperation(user);
-		log.debug(logs);
 		return SUCCESS;
 	}
-	
 	
 	public List<LogUserOperationDTO> getLogs() {
 		return logs;
@@ -62,6 +51,14 @@ public class LogAction extends ActionSupport implements SessionAware {
 	@Override
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
+	}
+	
+	public void setLogUserOperationBusiness(LogUserOperationBusiness logUserOperationBusiness) {
+		this.logUserOperationBusiness = logUserOperationBusiness;
+	}
+	
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 }
