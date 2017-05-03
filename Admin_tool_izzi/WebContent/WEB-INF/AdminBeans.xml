@@ -6,6 +6,10 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
+<!-- 	<context:annotation-config /> -->
+
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
 	<bean id="localeAction" class="mx.izzi.admintool.action.LocaleAction"
 		scope="prototype">
 	</bean>
@@ -20,11 +24,13 @@
 	</bean>
 
 	<!-- Logging util -->
-	<bean id="logUserOperationDAO" class="mx.izzi.admintool.dblog.dao.impl.LogUserOperationDAOImpl">
+	<bean id="logUserOperationDAO"
+		class="mx.izzi.admintool.dblog.dao.impl.LogUserOperationDAOImpl">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-	
-	<bean id="logUserOperationBusiness" class="mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl">
+
+	<bean id="logUserOperationBusiness"
+		class="mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl">
 		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
 
@@ -106,7 +112,19 @@
 		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
 
- 
+	<!-- user -->
+	<bean id="" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPR">
+	</bean>
+	
+	<bean id="userActionDAO" class="mx.izzi.admintool.user.dao.impl.UserActionDAOImpl">
+	</bean>
+	
+	<bean id="userActionBusiness" class="mx.izzi.admintool.user.business.impl.UserActionBusinessImpl">
+	</bean>
+	
+	<bean id="userActionAction" class="mx.izzi.admintool.user.action.UserActionAction">
+	</bean>
 
+	
 
 </beans>

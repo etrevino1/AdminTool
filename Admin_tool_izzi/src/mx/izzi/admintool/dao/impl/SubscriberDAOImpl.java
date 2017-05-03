@@ -11,6 +11,7 @@ import org.apache.axis.AxisFault;
 import org.apache.log4j.Logger;
 
 import mx.izzi.admintool.dao.SubscriberDAO;
+import mx.izzi.admintool.exception.SubscriberException;
 import mx.izzi.admintool.util.DetermineNode;
 import tv.mirada.www.iris.core.subscriber.messages.ActivateSubscriberRequest;
 import tv.mirada.www.iris.core.subscriber.messages.CreateSubscriberRequest;
@@ -95,16 +96,21 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 		return request;
 	}
 
-	public Subscriber findSubscriberRequest(String account){
+	public Subscriber findSubscriberRequest(String account) throws SubscriberException{
 		return findSubscriberRequest(account, "mex");
 	}
 
-	public Subscriber findSubscriberRequest(String account, String region){
+	public Subscriber findSubscriberRequest(String account, String region) throws SubscriberException{
 		FindSubscriberRequest request = findSubscriber(account);
 		Subscriber subscriber = null;
 		try {
 			findSubscriberResponse = getStub(region).findSubscriber(request);
 			subscriber = findSubscriberResponse.getSubscriber();
+		}catch(AxisFault af){
+			if(af.getMessage().equals("SUBSCRIBER_NOT_FOUND")){
+				logger.error("AxisFault: " + af.getMessage());
+				throw new SubscriberException();
+			}
 		}catch(RemoteException re){
 			logger.error(re.getMessage());
 			re.printStackTrace();
@@ -249,6 +255,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 			logger.error(e.getMessage());
 			logger.error(e.getCause());
 			logger.error(e.getStackTrace());
+			e.printStackTrace();
 		}
 		return ss;
 	}

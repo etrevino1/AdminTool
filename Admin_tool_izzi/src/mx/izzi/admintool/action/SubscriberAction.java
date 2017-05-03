@@ -22,7 +22,7 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 
 	static final long serialVersionUID = 74185458763L;
 
-	private Logger logger = Logger.getLogger(this.getClass());
+	private Logger log = Logger.getLogger(this.getClass());
 
 	private Map<String, Object> session = null;
 	HttpServletRequest request = null;
@@ -41,7 +41,17 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 
 	@Override
 	public String execute () {
-		logger.debug("SubscriberAction - execute : " + account + ", " + irisId + ", " + node);
+		log.debug("SubscriberAction - execute : " + account + ", " + irisId + ", " + node);
+		
+		if(request.isUserInRole("tomcat")){
+			log.debug("Has it");
+		}else{
+			addActionError("ACCESS_DENIED");
+			log.debug("does???");
+			return LOGIN;
+		}
+		
+		
 		if(account == null && irisId == null){
 			return SUCCESS;
 		}
@@ -79,20 +89,20 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 
 	public void validate(){
 
-		logger.debug("SubscriberAction - execute - session" + session);
+		log.debug("SubscriberAction - execute - session" + session);
 
-		if(session != null ){
-			logger.debug("valid");
-			logger.debug("Node=" + node);
+		if(session != null && !session.isEmpty()){
+			log.debug("valid");
+			log.debug("Node=" + node);
 			if(node == null || node == ""){
 				node = "mex";
 			}
-			logger.debug("Account=" + account);
+			log.debug("Account=" + account);
 			if(account == null){
 				account = (String)session.get("account");
 			}
 		}else{
-			logger.debug("Not valid");
+			log.debug("Not valid");
 		}
 		
 

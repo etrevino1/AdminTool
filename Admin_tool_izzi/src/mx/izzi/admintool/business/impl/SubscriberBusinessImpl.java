@@ -13,6 +13,7 @@ import mx.izzi.admintool.business.SubscriberBusiness;
 import mx.izzi.admintool.dao.SubscriberDAO;
 import mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl;
 import mx.izzi.admintool.dblog.dto.LogUserOperationDTO;
+import mx.izzi.admintool.exception.SubscriberException;
 
 public class SubscriberBusinessImpl extends LogUserOperationBusinessImpl implements SubscriberBusiness{
 
@@ -34,14 +35,14 @@ public class SubscriberBusinessImpl extends LogUserOperationBusinessImpl impleme
 	}
 	
 	@Override
-	public Subscriber findSubscriber(String account, String node, String user){
+	public Subscriber findSubscriber(String account, String node, String user) throws SubscriberException{
 		logger.debug("SubscriberBusiness - FindSubscriber(" + account + ")" + " - " + node);
 		logUserOperation(new LogUserOperationDTO(user, "FindSubscriber", "FindSubscriber: " + account, new Timestamp(Calendar.getInstance().getTimeInMillis())));
 		return this.getSubscriberDAO().findSubscriberRequest(account, node);
 	}
 	
 	@Override
-	public Subscriber findSubscriber(Long irisId, String node, String user){
+	public Subscriber findSubscriber(Long irisId, String node, String user) throws SubscriberException{
 		logger.debug("SubscriberBusiness - FindSubscriber(irisId)" + " - " + node);
 		logUserOperation(new LogUserOperationDTO(user, "FindSubscriber(irisId)", "FindSubscriber(irisId): " + irisId, new Timestamp(Calendar.getInstance().getTimeInMillis())));
 		return this.getSubscriberDAO().findSubscriberRequest(irisId, node);

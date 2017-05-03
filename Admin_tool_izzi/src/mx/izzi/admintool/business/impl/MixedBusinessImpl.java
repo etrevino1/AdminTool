@@ -14,6 +14,7 @@ import mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl;
 import mx.izzi.admintool.dblog.dto.LogUserOperationDTO;
 import mx.izzi.admintool.dto.IzziTvClientDTO;
 import mx.izzi.admintool.exception.CPEException;
+import mx.izzi.admintool.exception.SubscriberException;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 import tv.mirada.www.iris.core.types.Subscriber;
 
@@ -27,30 +28,39 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 
 	public IzziTvClientDTO getClient(String account, String node, String user){
 		log.debug("MixedBusinessImpl - getClient");
-		
+
 		IzziTvClientDTO client = new IzziTvClientDTO();
-		
-		client.setSubscriber(subscriberBusiness.findSubscriber(account, node, user));
-		client.setSubscription(subscriberBusiness.getSubscriptions(account, node, user));
-		client.setEquipment(subscriberBusiness.getCPEs(account, node, user));
-		
+
+		try{
+			client.setSubscriber(subscriberBusiness.findSubscriber(account, node, user));
+			client.setSubscription(subscriberBusiness.getSubscriptions(account, node, user));
+			client.setEquipment(subscriberBusiness.getCPEs(account, node, user));
+		}catch(SubscriberException se){
+			return null;
+		}
+
+
 		return client;
 	}
-	
+
 	public IzziTvClientDTO getClient(Long irisId, String node, String user){
 		log.debug("MixedBusinessImpl - getClient");
 		logUserOperation(new LogUserOperationDTO(user, "retrieve", "findSubscriber : " + irisId, new Timestamp(Calendar.getInstance().getTimeInMillis())));
-		
+
 		IzziTvClientDTO client = new IzziTvClientDTO();
-		
-		client.setSubscriber(subscriberBusiness.findSubscriber(irisId, node, user));
-		String account = client.getSubscriber().getOperatorSubscriberId().getId();
-		client.setSubscription(subscriberBusiness.getSubscriptions(account, node, user));
-		client.setEquipment(subscriberBusiness.getCPEs(account, node, user));
-		
+
+		try{
+			client.setSubscriber(subscriberBusiness.findSubscriber(irisId, node, user));
+			String account = client.getSubscriber().getOperatorSubscriberId().getId();
+			client.setSubscription(subscriberBusiness.getSubscriptions(account, node, user));
+			client.setEquipment(subscriberBusiness.getCPEs(account, node, user));
+		}catch(SubscriberException se){
+			return null;
+		}
+
 		return client;
 	}
-	
+
 	public void activateAccount(String account, String node, String user){
 		//getEquipments
 		List<CustomerPremisesEquipment> equipos = subscriberBusiness.getCPEs(account, node, user);
@@ -66,12 +76,12 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 	public void deactivateAccount(String account, String node, String user){
 		//getEquipments
 		List<CustomerPremisesEquipment> equipos = subscriberBusiness.getCPEs(account, node, user);
-		
+
 		for(CustomerPremisesEquipment equipo : equipos){
 			logUserOperation(new LogUserOperationDTO(user, "deactivate", "disableCPE : " + equipo, new Timestamp(Calendar.getInstance().getTimeInMillis())));
 			iRDBusiness.disableCPE(equipo, node, user);
 		}
-		
+
 		//deactivateSubscriber
 		logUserOperation(new LogUserOperationDTO(user, "deactivate", "deactivateAccount : " + account, new Timestamp(Calendar.getInstance().getTimeInMillis())));
 		subscriberBusiness.deactivateSubscriber(account, node, user);
@@ -84,12 +94,16 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 
 		if(cpe != null){
 			logUserOperation(new LogUserOperationDTO(user, "retrieve", "findCPESubscriber : " + hardwareId, new Timestamp(Calendar.getInstance().getTimeInMillis())));
-			return subscriberBusiness.findSubscriber(cpe.getIrisSubscriberId(), node, user);
+			try{
+				return subscriberBusiness.findSubscriber(cpe.getIrisSubscriberId(), node, user);
+			}catch(SubscriberException se){
+				log.debug(se.getMessage());
+			}
 		}
 
 		return null;
 	}
-	
+
 	public void setSubscriberBusiness(SubscriberBusiness subscriberBusiness) {
 		this.subscriberBusiness = subscriberBusiness;
 	}

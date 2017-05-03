@@ -72,7 +72,7 @@ table.list, table.list td, table.list th {
 				<td><select name="node" style="width:100%">
 						<option disabled selected value>
 							<c:forEach var="row" items="${rs_node.rows}">
-								<option value='${row.mirada_node_descr}'>${row.mirada_node_descr}</option>
+								<option value='${row.mirada_node_code}'>${row.mirada_node_descr}</option>
 							</c:forEach>
 				</select></td>
 			</tr>

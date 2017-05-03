@@ -5,6 +5,15 @@
 	id="WebApp_ID" version="3.1">
 	<display-name>Admin_tool_izzi</display-name>
 
+<login-config>
+  <auth-method>DIGEST</auth-method>
+  <realm-name>MyRealm</realm-name>
+</login-config>
+
+<security-role>
+  <role-name>tomcat</role-name>
+</security-role>
+<!--  -->
 <security-constraint>
   <web-resource-collection>
     <web-resource-name>The entire webapp</web-resource-name>
@@ -14,13 +23,6 @@
     <role-name>tomcat</role-name>
   </auth-constraint>
 </security-constraint>
-<login-config>
-  <auth-method>BASIC</auth-method>
-  <realm-name>MyRealm</realm-name>
-</login-config>
-<security-role>
-  <role-name>tomcat</role-name>
-</security-role>
 
 	<jsp-config>
 		<taglib>
@@ -41,13 +43,6 @@
 	    <param-name>contextConfigLocation</param-name>
 	    <param-value>/WEB-INF/AdminBeans.xml</param-value>
 	</context-param>
-
-  <resource-ref>
-      <description>DB Connection</description>
-      <res-ref-name>jdbc/SSO</res-ref-name>
-      <res-type>javax.sql.DataSource</res-type>
-      <res-auth>Container</res-auth>
-  </resource-ref>
 
 	<filter>
 		<filter-name>struts2</filter-name>
