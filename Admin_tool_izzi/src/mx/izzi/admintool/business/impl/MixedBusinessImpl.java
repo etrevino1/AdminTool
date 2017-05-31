@@ -14,6 +14,7 @@ import mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl;
 import mx.izzi.admintool.dblog.dto.LogUserOperationDTO;
 import mx.izzi.admintool.dto.IzziTvClientDTO;
 import mx.izzi.admintool.exception.CPEException;
+import mx.izzi.admintool.exception.NDSTransformationTVIException;
 import mx.izzi.admintool.exception.SubscriberException;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 import tv.mirada.www.iris.core.types.Subscriber;
@@ -61,7 +62,7 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 		return client;
 	}
 
-	public void activateAccount(String account, String node, String user){
+	public void activateAccount(String account, String node, String user) throws NDSTransformationTVIException{
 		//getEquipments
 		List<CustomerPremisesEquipment> equipos = subscriberBusiness.getCPEs(account, node, user);
 		//activateSubscriber
@@ -73,7 +74,7 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 
 	}
 
-	public void deactivateAccount(String account, String node, String user){
+	public void deactivateAccount(String account, String node, String user) throws NDSTransformationTVIException{
 		//getEquipments
 		List<CustomerPremisesEquipment> equipos = subscriberBusiness.getCPEs(account, node, user);
 
@@ -88,8 +89,8 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 	}
 
 	@Override
-	public Subscriber findCPESubscriber(String hardwareId, String node, String user) throws CPEException{
-
+	public Subscriber findCPESubscriber(String hardwareId, String node, String user) throws CPEException, NDSTransformationTVIException{
+		
 		CustomerPremisesEquipment cpe = cpeBusiness.findCPE(hardwareId, node);
 
 		if(cpe != null){

@@ -10,6 +10,8 @@ import mx.izzi.admintool.dao.CpeDAO;
 import mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl;
 import mx.izzi.admintool.dblog.dto.LogUserOperationDTO;
 import mx.izzi.admintool.exception.CPEException;
+import mx.izzi.admintool.exception.NDSTransformationTVIException;
+import mx.izzi.admintool.util.NDSTransformationTVI;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 
 public class CpeBusinessImpl extends LogUserOperationBusinessImpl implements CpeBusiness {
@@ -26,15 +28,21 @@ public class CpeBusinessImpl extends LogUserOperationBusinessImpl implements Cpe
 	}
 	
 	@Override
-	public boolean addCPE(String account, String hardwareId, String type, String node, String user) {
+	public boolean addCPE(String account, String hardwareId, String type, String node, String user) throws NDSTransformationTVIException{
 		log.debug("Add CPE:" + hardwareId);
+		if(node.equals("mty")){
+			hardwareId = NDSTransformationTVI.createNDSChipID(hardwareId);
+		}
 		logUserOperation(new LogUserOperationDTO(user, "add", "addCPE: " + hardwareId, new Timestamp(Calendar.getInstance().getTimeInMillis())));
 		return this.cpeDAO.addCPE(account, hardwareId, type, node);
 	}
 	
 	@Override
-	public CustomerPremisesEquipment findCPE(String hardwareId, String node) throws CPEException{
+	public CustomerPremisesEquipment findCPE(String hardwareId, String node) throws CPEException, NDSTransformationTVIException{
 		log.debug("CpeBusinessImpl - findCPE: hardwareId: " + hardwareId + ", node: " + node);
+		if(node.equals("mty")){
+			hardwareId = NDSTransformationTVI.createNDSChipID(hardwareId);
+		}
 		return cpeDAO.findCPE(hardwareId, node).getCustomerPremisesEquipment();
 	}
 

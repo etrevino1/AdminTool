@@ -29,9 +29,12 @@
 <body>
 	<s:url id="findSubscriber" namespace="/" action="findSubscriber">
 	</s:url>
+	<s:url id="viewUsers" namespace="/user" action="getUsers">
+	</s:url>
 	<s:url id="viewLog" namespace="/log" action="viewLog">
 	</s:url>
 	<s:a href="%{findSubscriber}">Subscriber</s:a>
+	<s:a href="%{viewUsers}">Users</s:a>
 	<s:a href="%{viewLog}">Log</s:a>
 	<br />
 	<a href="<s:url action="index" namespace="config-browser" />">Launch

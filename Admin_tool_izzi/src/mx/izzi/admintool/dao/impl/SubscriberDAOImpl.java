@@ -218,10 +218,14 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 		try{
 			if(getStub(node).createSubscriber(request).getIrisSubscriberId() > 0)
 				return true;
+		}catch(AxisFault af){
+			af.printStackTrace();
+			logger.error(af.detail);
 		}catch(RemoteException re){
 			logger.error(re.getMessage());
 			logger.error(re.getCause());
 			logger.error(re.getStackTrace());
+			re.printStackTrace();
 		}
 		return false;
 	}

@@ -21,6 +21,7 @@ public class LogUserOperationBusinessImpl implements LogUserOperationBusiness {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<LogUserOperationDTO> getLogUserOperation(String user) {
 		Map<?, ?> data = logUserOperationDAO.getLogUserOperation(user);
 		return (List<LogUserOperationDTO>)data.get("RESULT_LIST");

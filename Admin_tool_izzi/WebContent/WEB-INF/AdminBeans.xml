@@ -18,7 +18,7 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="org.gjt.mm.mysql.Driver" />
-		<property name="url" value="jdbc:mysql://10.25.11.111:3306/tomcat_realm" />
+		<property name="url" value="jdbc:mysql://10.25.11.125:3306/tomcat_realm" />
 		<property name="username" value="root" />
 		<property name="password" value="June2006!!" />
 	</bean>
@@ -113,7 +113,13 @@
 	</bean>
 
 	<!-- user -->
-	<bean id="" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPR">
+	<bean id="platformUserSPR" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPR">
+	</bean>
+	
+	<bean id="platformUserSPI" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPI">
+	</bean>
+	
+	<bean id="platformUserSPD" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPD">
 	</bean>
 	
 	<bean id="userActionDAO" class="mx.izzi.admintool.user.dao.impl.UserActionDAOImpl">
@@ -122,7 +128,7 @@
 	<bean id="userActionBusiness" class="mx.izzi.admintool.user.business.impl.UserActionBusinessImpl">
 	</bean>
 	
-	<bean id="userActionAction" class="mx.izzi.admintool.user.action.UserActionAction">
+	<bean id="userActionAction" class="mx.izzi.admintool.user.action.UserActionAction" scope="request">
 	</bean>
 
 	

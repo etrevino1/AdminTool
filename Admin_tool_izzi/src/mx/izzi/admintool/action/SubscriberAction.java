@@ -55,6 +55,9 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 		if(account == null && irisId == null){
 			return SUCCESS;
 		}
+		if(node == null || node.equals("") ){
+			node = "mex";
+		}
 		IzziTvClientDTO client = null;
 		String user = request.getUserPrincipal().getName();
 		if(account != null && account.length() > 0){
@@ -94,9 +97,14 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 		if(session != null && !session.isEmpty()){
 			log.debug("valid");
 			log.debug("Node=" + node);
+			
 			if(node == null || node == ""){
-				node = "mex";
+				node = (String)session.get("node");
+				if(node == null){
+					node = "mex";
+				}
 			}
+
 			log.debug("Account=" + account);
 			if(account == null){
 				account = (String)session.get("account");

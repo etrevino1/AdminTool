@@ -15,6 +15,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import mx.izzi.admintool.business.IRDBusiness;
 import mx.izzi.admintool.business.MixedBusiness;
+import mx.izzi.admintool.exception.NDSTransformationTVIException;
 
 @Namespace("/ird")
 public class IRDAction extends ActionSupport implements SessionAware, ServletRequestAware {
@@ -22,10 +23,10 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 	static final long serialVersionUID = 741852963;
 
 	private Logger logger = Logger.getLogger(this.getClass());
-	
+
 	private Map<String, Object> session = null;
 	private HttpServletRequest request = null;
-	
+
 	private String hardwareId = null;
 
 	private MixedBusiness mixedBusiness = null;
@@ -40,13 +41,17 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 	public String execute(){
 		logger.debug("IRDAction - execute");
 		if(session != null){
-			mixedBusiness.activateAccount((String)session.get("account"), (String)session.get("node"), request.getUserPrincipal().getName());
 			logger.debug("valid session");
+			try{
+				mixedBusiness.activateAccount((String)session.get("account"), (String)session.get("node"), request.getUserPrincipal().getName());
+			}catch(NDSTransformationTVIException ndsttvie){
+				logger.error(ndsttvie.getMessage());
+			}
 		}else{
 			logger.debug("not-valid session");
 		}
-		
-		
+
+
 		return SUCCESS;
 	}
 
@@ -57,7 +62,11 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			}
 			)
 	public String deactivateAccount(){
-		mixedBusiness.deactivateAccount((String)session.get("account"), (String)session.get("node"), request.getUserPrincipal().getName());
+		try{
+			mixedBusiness.deactivateAccount((String)session.get("account"), (String)session.get("node"), request.getUserPrincipal().getName());
+		}catch(NDSTransformationTVIException ndsttvie){
+			logger.error(ndsttvie.getMessage());
+		}
 		return SUCCESS;
 	}
 
@@ -69,7 +78,11 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String sendMessage(){
 		logger.debug("Prueba de comunicación, " + hardwareId + ", " + (String)session.get("node"));
-		iRDBusiness.sendMessage("Prueba de comunicación", hardwareId, false, (String)session.get("node"), request.getUserPrincipal().getName());
+		try{
+			iRDBusiness.sendMessage("Prueba de comunicación", hardwareId, false, (String)session.get("node"), request.getUserPrincipal().getName());
+		}catch(NDSTransformationTVIException ndsttvie){
+			logger.error(ndsttvie.getMessage());
+		}
 		return SUCCESS;
 	}
 
@@ -81,10 +94,14 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String rebootSTB(){
 		logger.debug("IRDAction - rebootSTB");
-		iRDBusiness.rebootSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+		try{
+			iRDBusiness.rebootSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+		}catch(NDSTransformationTVIException ndsttvie){
+			logger.error(ndsttvie.getMessage());
+		}
 		return SUCCESS;
 	}
-	
+
 	@Action(
 			value="restore",
 			results={
@@ -93,10 +110,14 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String restoreSTB(){
 		logger.debug("IRDAction - restoreSTB");
-		iRDBusiness.restoreSTB(hardwareId, "FULL", (String)session.get("node"), request.getUserPrincipal().getName());
+		try{
+			iRDBusiness.restoreSTB(hardwareId, "FULL", (String)session.get("node"), request.getUserPrincipal().getName());
+		}catch(NDSTransformationTVIException ndsttvie){
+			logger.error(ndsttvie.getMessage());
+		}
 		return SUCCESS;
 	}
-	
+
 	@Action(
 			value="enable",
 			results={
@@ -105,7 +126,11 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String enableSTB(){
 		logger.debug("IRDAction - enableSTB: " + hardwareId);
-		iRDBusiness.enableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+		try{
+			iRDBusiness.enableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+		}catch(NDSTransformationTVIException ndsttvie){
+			logger.error(ndsttvie.getMessage());
+		}
 		return SUCCESS;
 	}
 
@@ -117,10 +142,14 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String disableSTB(){
 		logger.debug("IRDAction - disableSTB: " + hardwareId);
-		iRDBusiness.disableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+		try{
+			iRDBusiness.disableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+		}catch(NDSTransformationTVIException ndsttvie){
+			logger.error(ndsttvie.getMessage());
+		}
 		return SUCCESS;
 	}
-	
+
 	public void setMixedBusiness(MixedBusiness mixedBusiness) {
 		this.mixedBusiness = mixedBusiness;
 	}
@@ -140,7 +169,7 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			logger.debug("Not valid");
 		}
 	}
-	
+
 	@Override
 	public void setSession(Map<String, Object> session) {
 		logger.debug("IRDAction - Set session");

@@ -15,12 +15,13 @@ import com.opensymphony.xwork2.ActionSupport;
 import mx.izzi.admintool.business.CpeBusiness;
 import mx.izzi.admintool.business.MixedBusiness;
 import mx.izzi.admintool.exception.CPEException;
+import mx.izzi.admintool.exception.NDSTransformationTVIException;
 import tv.mirada.www.iris.core.types.Subscriber;
 
 public class CpeAction extends ActionSupport implements SessionAware, ServletRequestAware{
 	static final long serialVersionUID = 1L;
 	private Logger log = Logger.getLogger(this.getClass());
-	
+
 	private Map<String, Object> session = null;
 	private HttpServletRequest request = null;
 
@@ -31,7 +32,11 @@ public class CpeAction extends ActionSupport implements SessionAware, ServletReq
 
 	public String execute(){
 		log.debug("CPE iris Id: " + irisId);
-		this.cpeBusiness.deleteCPE(irisId, node, request.getUserPrincipal().getName());
+		try{
+			this.cpeBusiness.deleteCPE(irisId, node, request.getUserPrincipal().getName());
+		}catch(NDSTransformationTVIException ndsttvie){
+			log.error(ndsttvie.getMessage());
+		}
 		irisId=null;
 		return SUCCESS;
 	}
@@ -39,9 +44,11 @@ public class CpeAction extends ActionSupport implements SessionAware, ServletReq
 	public String addCPE(){
 		log.debug("CPE HardwareId " + hardwareId);
 		log.debug("CPE Type " + type);
-
-		this.cpeBusiness.addCPE(account, hardwareId, type, node, request.getUserPrincipal().getName());
-
+		try{
+			this.cpeBusiness.addCPE(account, hardwareId, type, node, request.getUserPrincipal().getName());
+		}catch(NDSTransformationTVIException ndsttvie){
+			log.error(ndsttvie.getMessage());
+		}
 		return SUCCESS;
 	}
 
@@ -57,7 +64,11 @@ public class CpeAction extends ActionSupport implements SessionAware, ServletReq
 			try{
 				Subscriber subscriber = mixedBusiness.findCPESubscriber(hardwareId, node, request.getUserPrincipal().getName());
 				session.put("account", subscriber.getOperatorSubscriberId().getId());
+				session.put("node", node);
 			}catch(CPEException cpee){
+				return ERROR;
+			}catch(NDSTransformationTVIException ndsttvie){
+				log.error(ndsttvie.getMessage());
 				return ERROR;
 			}
 			return "found";
@@ -96,8 +107,8 @@ public class CpeAction extends ActionSupport implements SessionAware, ServletReq
 	public void setHardwareId(String hardwareId) {
 		this.hardwareId = hardwareId;
 	}
-	
-//	@RequiredFieldValidator(message = "Required")
+
+	//	@RequiredFieldValidator(message = "Required")
 	public String getHardwareId(){
 		return hardwareId;
 	}

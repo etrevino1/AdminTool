@@ -50,6 +50,8 @@ table.list, table.list td, table.list th {
 	</s:url>
 	<s:url id="findCPE" namespace="/" action="findCPE">
 	</s:url>
+	<s:url id="viewUsers" namespace="/user" action="getUsers">
+	</s:url>
 	<s:url id="viewLog" namespace="/log" action="viewLog">
 	</s:url>
 	<s:a href="%{localeEN}">English</s:a>
@@ -57,10 +59,10 @@ table.list, table.list td, table.list th {
 	<s:a href="%{localeDE}">Deutsche</s:a>
 	<br />
 	<s:a href="%{findCPE}">CPE</s:a>
+	<s:a href="%{viewUsers}">Users</s:a>
 	<s:a href="%{viewLog}">Log</s:a>
 	<br />
-	<a href="<s:url action="index" namespace="config-browser" />">Launch
-		the configuration browser</a>
+	<a href="<s:url action="index" namespace="config-browser" />">Launch the configuration browser</a>
 
 	<s:form method="post" action="/findSubscriber">
 		<table style="border: 1px solid black">
@@ -100,15 +102,18 @@ table.list, table.list td, table.list th {
 				<td>${subscriber.nickname}</td>
 				<td>${subscriber.irisId}</td>
 				<td>${subscriber.regionName}</td>
-				<td><s:url id="deleteSubscriber" namespace="/suscriptor"
-						action="deleteSubscriber">
+				<td>
+					<s:url id="deleteSubscriber" namespace="/suscriptor" action="deleteSubscriber">
 						<s:param name="account">${account}</s:param>
-					</s:url> <s:url id="activate" namespace="/ird" action="activateAccount">
-
-					</s:url> <s:url id="deactivate" namespace="/ird" action="deactivateAccount">
+					</s:url> 
+					<s:url id="activate" namespace="/ird" action="activateAccount">
+					</s:url> 
+					<s:url id="deactivate" namespace="/ird" action="deactivateAccount">
 						<s:param name="subscriber">${account}</s:param>
-					</s:url> <s:a href="%{deleteSubscriber}">Delete</s:a> <s:a
-						href="%{activate}">Activate</s:a> <s:a href="%{deactivate}">Deactivate</s:a>
+					</s:url> 
+					<s:a href="%{deleteSubscriber}">Delete</s:a>
+					<s:a href="%{activate}">Activate</s:a> 
+					<s:a href="%{deactivate}">Deactivate</s:a>
 				</td>
 			</tr>
 		</table>
