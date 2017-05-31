@@ -29,8 +29,11 @@ table.list, table.list td, table.list th {
 	</s:url>
 	<s:url id="findCPE" namespace="/" action="findCPE">
 	</s:url>
+	<s:url id="viewUsers" namespace="/user" action="getUsers">
+	</s:url>
 	<s:a href="%{findSubscriber}">Subscriber</s:a>
 	<s:a href="%{findCPE}">CPE</s:a>
+	<s:a href="%{viewUsers}">Users</s:a>
 	<br />
 	<a href="<s:url action="index" namespace="config-browser" />">Launch
 		the configuration browser</a>
@@ -61,6 +64,7 @@ table.list, table.list td, table.list th {
 				<td>${current.user}</td>
 				<td>${current.operation}</td>
 				<td>${current.detail}</td>
+			</tr>
 		</c:forEach>
 	</table>
 </body>
