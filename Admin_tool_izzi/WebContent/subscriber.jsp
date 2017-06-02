@@ -90,18 +90,20 @@ table.list, table.list td, table.list th {
 	<h3>
 		<s:text name="label.clients" />
 	</h3>
-	<c:if test="${!empty subscriber}">
+	<c:if test="${!empty client}">
 		<table class="list">
 			<tr>
 				<th align="left"><s:text name="label.nickname" /></th>
 				<th align="left"><s:text name="label.irisId" /></th>
 				<th align="left"><s:text name="label.regionName" /></th>
+				<th align="left"><s:text name="label.PPV"></s:text></th>
 				<th align="left"><s:text name="label.actions" /></th>
 			</tr>
 			<tr>
-				<td>${subscriber.nickname}</td>
-				<td>${subscriber.irisId}</td>
-				<td>${subscriber.regionName}</td>
+				<td>${client.subscriber.nickname}</td>
+				<td>${client.subscriber.irisId}</td>
+				<td>${client.subscriber.regionName}</td>
+				<td>${client.impulsePPVAllowed}</td>
 				<td>
 					<s:url id="deleteSubscriber" namespace="/suscriptor" action="deleteSubscriber">
 						<s:param name="account">${account}</s:param>
@@ -111,9 +113,13 @@ table.list, table.list td, table.list th {
 					<s:url id="deactivate" namespace="/ird" action="deactivateAccount">
 						<s:param name="subscriber">${account}</s:param>
 					</s:url> 
+					<s:url id="updateIPPV" namespace="/ippv" action="updateIPPV">
+						<s:param name="account">${account}</s:param>
+					</s:url>
 					<s:a href="%{deleteSubscriber}">Delete</s:a>
 					<s:a href="%{activate}">Activate</s:a> 
 					<s:a href="%{deactivate}">Deactivate</s:a>
+					<s:a href="%{updateIPPV}">UpdateIPPV</s:a>
 				</td>
 			</tr>
 		</table>
@@ -136,7 +142,7 @@ table.list, table.list td, table.list th {
 
 		<s:submit key="label.send"></s:submit>
 	</s:form>
-	<c:if test="${!empty subscription}">
+	<c:if test="${!empty client.subscription}">
 		<table class="list">
 			<tr>
 				<th align="left"><s:text name="label.actions" /></th>
@@ -146,7 +152,7 @@ table.list, table.list td, table.list th {
 				<th align="left"><s:text name="label.creationDate" /></th>
 			</tr>
 
-			<c:forEach items="${subscription}" var="current">
+			<c:forEach items="${client.subscription}" var="current">
 				<tr>
 					<td><s:url id="deletePackage" namespace="/service"
 							action="mirada">
@@ -186,7 +192,7 @@ table.list, table.list td, table.list th {
 		</table>
 	</s:form>
 
-	<c:if test="${!empty equipments}">
+	<c:if test="${!empty client.equipment}">
 		<table class="list">
 			<tr>
 				<th align="left"><s:text name="label.actions" /></th>
@@ -195,7 +201,7 @@ table.list, table.list td, table.list th {
 				<th align="left"><s:text name="label.type" /></th>
 				<th align="left"><s:text name="label.creationDate" /></th>
 			</tr>
-			<c:forEach items="${equipments}" var="current">
+			<c:forEach items="${client.equipment}" var="current">
 				<tr>
 					<td>
 						<s:url id="deleteCPE" namespace="/cpe" action="deleteCPE">

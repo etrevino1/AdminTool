@@ -1,6 +1,5 @@
 package mx.izzi.admintool.action;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +8,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
-import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
-import tv.mirada.www.iris.core.types.Subscriber;
-import tv.mirada.www.iris.core.types.Subscription;
 import mx.izzi.admintool.business.MixedBusiness;
 import mx.izzi.admintool.business.SubscriberBusiness;
 import mx.izzi.admintool.dto.IzziTvClientDTO;
@@ -29,15 +25,10 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 
 	private SubscriberBusiness subscriberBusiness;
 	private MixedBusiness mixedBusiness;
-	public void setMixedBusiness(MixedBusiness mixedBusiness) {
-		this.mixedBusiness = mixedBusiness;
-	}
 
 	private String account = null, irisId = null, node = null, region = null;
 
-	private Subscriber subscriber = null;
-	private List<Subscription> subscription = null;
-	private List<CustomerPremisesEquipment> equipments = null;
+	private IzziTvClientDTO client = null;
 
 	@Override
 	public String execute () {
@@ -58,7 +49,7 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 		if(node == null || node.equals("") ){
 			node = "mex";
 		}
-		IzziTvClientDTO client = null;
+		client = null;
 		String user = request.getUserPrincipal().getName();
 		if(account != null && account.length() > 0){
 			client = mixedBusiness.getClient(account, node, user);
@@ -66,11 +57,7 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 			client = mixedBusiness.getClient(Long.parseLong(irisId), node, user);
 			account = client.getSubscriber().getOperatorSubscriberId().getId();
 		}
-		if(client != null){
-			subscriber = client.getSubscriber();
-			subscription = client.getSubscription();
-			equipments = client.getEquipment();
-		}
+
 		session.put("account", account);
 		session.put("node", node);
 		return SUCCESS;
@@ -116,30 +103,6 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 
 	}
 
-	public List<Subscription> getSubscription() {
-		return subscription;
-	}
-
-	public void setSubscription(List<Subscription> suscription) {
-		this.subscription = suscription;
-	}
-
-	public Subscriber getSubscriber() {
-		return subscriber;
-	}
-
-	public void setSubscriber(Subscriber subscriber) {
-		this.subscriber = subscriber;
-	}
-
-	public List<CustomerPremisesEquipment> getEquipments() {
-		return equipments;
-	}
-
-	public void setEquipments(List<CustomerPremisesEquipment> equipments) {
-		this.equipments = equipments;
-	}
-
 	public String getIrisId() {
 		return irisId;
 	}
@@ -164,6 +127,10 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 		this.subscriberBusiness = subscriberBusiness;
 	}
 
+	public void setMixedBusiness(MixedBusiness mixedBusiness) {
+		this.mixedBusiness = mixedBusiness;
+	}
+
 	public void setNode(String node) {
 		this.node = node;
 	}
@@ -172,17 +139,17 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 		this.region = region;
 	}
 
+	public IzziTvClientDTO getClient() {
+		return client;
+	}
+
 	@Override
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
-
 	}
 
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
-		
 	}
-
-
 }

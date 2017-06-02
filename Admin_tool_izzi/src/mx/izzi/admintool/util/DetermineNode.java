@@ -8,6 +8,7 @@ public class DetermineNode {
 	private static final String SERVICE = "/managetv/prov/services/";
 	private static final String DEVICE = "/managetv/prov/devices/";
 	private static final String IRD = "/managetv/prov/ird/";
+	private static final String IPPV = "/managetv/ppv/subscriberppv/";
 	
 	
 	public static String getService(String node, String service) throws Exception{
@@ -34,6 +35,9 @@ public class DetermineNode {
 			break;
 		case "ird":
 			address += IRD;
+			break;
+		case "ippv":
+			address += IPPV;
 			break;
 			default:
 				throw new Exception("Invalid service: " + service);

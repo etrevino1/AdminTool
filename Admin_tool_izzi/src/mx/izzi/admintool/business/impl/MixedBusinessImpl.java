@@ -5,17 +5,20 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import mx.izzi.admintool.business.IRDBusiness;
 import mx.izzi.admintool.business.CpeBusiness;
 import mx.izzi.admintool.business.MixedBusiness;
 import mx.izzi.admintool.business.SubscriberBusiness;
+import mx.izzi.admintool.business.SubscriberPPVBusiness;
 import mx.izzi.admintool.dblog.business.impl.LogUserOperationBusinessImpl;
 import mx.izzi.admintool.dblog.dto.LogUserOperationDTO;
 import mx.izzi.admintool.dto.IzziTvClientDTO;
 import mx.izzi.admintool.exception.CPEException;
 import mx.izzi.admintool.exception.NDSTransformationTVIException;
 import mx.izzi.admintool.exception.SubscriberException;
+import tv.mirada.www.iris.contents.subscriberPPV.messages.GetIPPVPurchaseSettingsResponse;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 import tv.mirada.www.iris.core.types.Subscriber;
 
@@ -26,6 +29,8 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 	private SubscriberBusiness subscriberBusiness = null;
 	private IRDBusiness iRDBusiness = null;
 	private CpeBusiness cpeBusiness = null;
+	private SubscriberPPVBusiness subscriberPPVBusiness = null;
+
 
 	public IzziTvClientDTO getClient(String account, String node, String user){
 		log.debug("MixedBusinessImpl - getClient");
@@ -36,6 +41,13 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 			client.setSubscriber(subscriberBusiness.findSubscriber(account, node, user));
 			client.setSubscription(subscriberBusiness.getSubscriptions(account, node, user));
 			client.setEquipment(subscriberBusiness.getCPEs(account, node, user));
+			
+			GetIPPVPurchaseSettingsResponse response = subscriberPPVBusiness.getIPPVDetail(account, node, user);
+			
+			client.setImpulsePPVAllowed(response.isIsImpulsePPVAllowed());
+			client.setMaxImpulsePPVCredit(response.getMaxImpulsePPVCredit());
+			client.setMaxOutstandingImpulsePPVPurchases(response.getMaxOutstandingImpulsePPVPurchases());
+			
 		}catch(SubscriberException se){
 			return null;
 		}
@@ -117,5 +129,9 @@ public class MixedBusinessImpl extends LogUserOperationBusinessImpl implements M
 		this.cpeBusiness = cpeBusiness;
 	}
 
+	@Autowired
+	public void setSubscriberPPVBusiness(SubscriberPPVBusiness subscriberPPVBusiness) {
+		this.subscriberPPVBusiness = subscriberPPVBusiness;
+	}
 
 }

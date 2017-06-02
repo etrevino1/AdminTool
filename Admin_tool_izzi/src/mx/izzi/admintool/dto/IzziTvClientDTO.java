@@ -10,6 +10,32 @@ public class IzziTvClientDTO {
 	private Subscriber subscriber;
 	private List<Subscription> subscription;
 	private List<CustomerPremisesEquipment> equipment;
+	private boolean impulsePPVAllowed;
+	private int maxOutstandingImpulsePPVPurchases;
+	private int MaxImpulsePPVCredit;
+	
+	
+	public boolean isImpulsePPVAllowed() {
+		return impulsePPVAllowed;
+	}
+	public String getImpulsePPVAllowed() {
+		return impulsePPVAllowed+"".toUpperCase();
+	}
+	public void setImpulsePPVAllowed(boolean impulsePPVAllowed) {
+		this.impulsePPVAllowed = impulsePPVAllowed;
+	}
+	public int getMaxOutstandingImpulsePPVPurchases() {
+		return maxOutstandingImpulsePPVPurchases;
+	}
+	public void setMaxOutstandingImpulsePPVPurchases(int maxOutstandingImpulsePPVPurchases) {
+		this.maxOutstandingImpulsePPVPurchases = maxOutstandingImpulsePPVPurchases;
+	}
+	public int getMaxImpulsePPVCredit() {
+		return MaxImpulsePPVCredit;
+	}
+	public void setMaxImpulsePPVCredit(int maxImpulsePPVCredit) {
+		MaxImpulsePPVCredit = maxImpulsePPVCredit;
+	}
 	public Subscriber getSubscriber() {
 		return subscriber;
 	}

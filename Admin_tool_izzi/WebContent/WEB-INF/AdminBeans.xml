@@ -6,9 +6,10 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-<!-- 	<context:annotation-config /> -->
+	<!-- <context:annotation-config /> -->
 
-	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 
 	<bean id="localeAction" class="mx.izzi.admintool.action.LocaleAction"
 		scope="prototype">
@@ -115,22 +116,31 @@
 	<!-- user -->
 	<bean id="platformUserSPR" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPR">
 	</bean>
-	
+
 	<bean id="platformUserSPI" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPI">
 	</bean>
-	
+
 	<bean id="platformUserSPD" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPD">
 	</bean>
-	
+
 	<bean id="userActionDAO" class="mx.izzi.admintool.user.dao.impl.UserActionDAOImpl">
 	</bean>
-	
+
 	<bean id="userActionBusiness" class="mx.izzi.admintool.user.business.impl.UserActionBusinessImpl">
 	</bean>
-	
-	<bean id="userActionAction" class="mx.izzi.admintool.user.action.UserActionAction" scope="request">
+
+	<bean id="userActionAction" class="mx.izzi.admintool.user.action.UserActionAction"
+		scope="request">
 	</bean>
 
-	
+	<!-- iPPV -->
+	<bean id="subscriberPPVDAO" class="mx.izzi.admintool.dao.impl.SubscriberPPDAOImpl">
+	</bean>
+
+	<bean id="subscriberPPVBusiness" class="mx.izzi.admintool.business.impl.SubscriberPPVBusinessImpl">
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
+	</bean>
+
+	<bean id="iPPVAction" class="mx.izzi.admintool.action.IPPVAction"></bean>
 
 </beans>
