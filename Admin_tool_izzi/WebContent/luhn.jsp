@@ -24,8 +24,11 @@ table.list, table.list td, table.list th {
 </style>
 
 </head>
+
+<%@ include file="/jsp/menu.jsp"%>
+
 <body>
-	<s:form method="post" action="equipo/mirada">
+	<s:form method="post" namespace="/equipo" action="mirada">
 		<table>
 			<tr>
 				<td><s:textfield key="equipo.inicialCA_ID" name="equipoInicial" /></td>
@@ -41,25 +44,19 @@ table.list, table.list td, table.list th {
 	</s:form>
 
 
-	<table class="list">
-		<tr>
-			<th align="left"><s:text name="equipo.number" />
-			<th align="left"><s:text name="equipo.CA_ID" />
-		</tr>
-		<c:if test="${!empty equipoValido}">
+	<c:if test="${!empty lista}">
+		<table class="list">
 			<tr>
-				<td>Individual</td>
-				<td>${equipoValido}</td>
+				<th align="left"><s:text name="equipo.number" />
+				<th align="left"><s:text name="equipo.CA_ID" />
 			</tr>
-		</c:if>
-		<c:if test="${!empty lista}">
 			<c:forEach items="${lista}" var="current" varStatus="contador">
 				<tr>
 					<td>${contador.index + 1}</td>
 					<td>${current}</td>
 				</tr>
 			</c:forEach>
-		</c:if>
-	</table>
+		</table>
+	</c:if>
 </body>
 </html>

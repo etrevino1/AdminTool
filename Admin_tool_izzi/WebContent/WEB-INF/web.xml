@@ -24,6 +24,7 @@
   </auth-constraint>
 </security-constraint>
 
+
 	<jsp-config>
 		<taglib>
 			<taglib-uri>c.tld</taglib-uri>
@@ -61,6 +62,16 @@
 	        org.springframework.web.context.ContextLoaderListener
 	   </listener-class>
 	</listener> 
+
+ <message-destination-ref>
+      <message-destination-ref-name>jms/myQueue</message-destination-ref-name>
+      <message-destination-type>javax.jms.Queue</message-destination-type>
+      <message-destination-usage>ConsumesProduces</message-destination-usage>
+      <message-destination-link>MyQueue</message-destination-link>
+  </message-destination-ref>
+  <message-destination>
+      <message-destination-name>MyQueue</message-destination-name>
+  </message-destination>
 
 	<welcome-file-list>
 		<welcome-file>/subscriber.jsp</welcome-file>

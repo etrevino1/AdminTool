@@ -49,10 +49,11 @@
 
 	<package name="equipo" namespace="/equipo" extends="struts-default">
 		<action name="mirada" class="miradaEquipoAction">
-			<result name="success" type="redirectAction">
-				<param name="actionName">/luhn</param>
-				<param name="nameSpace">/</param>
-			</result>
+			<result name="success">../luhn.jsp</result>
+<!-- 			<result name="success" type="redirectAction"> -->
+<!-- 				<param name="actionName">/luhn</param> -->
+<!-- 				<param name="nameSpace">/</param> -->
+<!-- 			</result> -->
 		</action>
 	</package>
 

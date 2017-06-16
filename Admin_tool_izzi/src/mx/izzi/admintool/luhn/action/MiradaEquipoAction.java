@@ -11,6 +11,8 @@ import mx.izzi.admintool.luhn.dto.Equipment;
 
 public class MiradaEquipoAction extends ActionSupport{
 
+	static final long serialVersionUID = 1L;
+	
 	private MiradaEquipoBusiness miradaEquipoBusiness;
 	private String equipo, ecm, equipoValido, equipoInicial, equipoFinal;
 	private Integer cantidad;
@@ -32,8 +34,8 @@ public class MiradaEquipoAction extends ActionSupport{
 			
 			equipmentList = this.getMiradaEquipoBusiness().getEquipmentList("", "", equipo, cantidad);
 			
-//			equipoValido = this.getMiradaEquipoBusiness().getFinalCAID(equipo);
-//			log.error(equipoValido);
+			equipoValido = this.getMiradaEquipoBusiness().getFinalCAID(equipo);
+			log.error(equipoValido);
 		}
 		if((this.getEquipoInicial() != null && this.getEquipoFinal() != null) && (this.getEquipoInicial().length() == 15 && this.getEquipoFinal().length() == 15)){
 			log.error("multiple Action");

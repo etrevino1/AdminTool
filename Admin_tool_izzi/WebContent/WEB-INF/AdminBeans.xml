@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
 	<!-- <context:annotation-config /> -->
@@ -16,13 +18,10 @@
 	</bean>
 
 	<!-- Logging in DB -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="org.gjt.mm.mysql.Driver" />
-		<property name="url" value="jdbc:mysql://10.25.11.125:3306/tomcat_realm" />
-		<property name="username" value="root" />
-		<property name="password" value="June2006!!" />
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/tomcat_realm"></property>
 	</bean>
+
 
 	<!-- Logging util -->
 	<bean id="logUserOperationDAO"
@@ -116,31 +115,65 @@
 	<!-- user -->
 	<bean id="platformUserSPR" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPR">
 	</bean>
+	<bean id="platformUserRolesSPR" class="mx.izzi.admintool.user.dao.sp.PlatformUserRolesSPR">
+	</bean>
 
 	<bean id="platformUserSPI" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPI">
 	</bean>
+	<bean id="platformUserRoleSPI" class="mx.izzi.admintool.user.dao.sp.PlatformUserRoleSPI">
+	</bean>
 
 	<bean id="platformUserSPD" class="mx.izzi.admintool.user.dao.sp.PlatformUserSPD">
+	</bean>
+	<bean id="platformUserRoleSPD" class="mx.izzi.admintool.user.dao.sp.PlatformUserRoleSPD">
 	</bean>
 
 	<bean id="userActionDAO" class="mx.izzi.admintool.user.dao.impl.UserActionDAOImpl">
 	</bean>
 
-	<bean id="userActionBusiness" class="mx.izzi.admintool.user.business.impl.UserActionBusinessImpl">
+	<bean id="userActionBusiness"
+		class="mx.izzi.admintool.user.business.impl.UserActionBusinessImpl">
 	</bean>
 
 	<bean id="userActionAction" class="mx.izzi.admintool.user.action.UserActionAction"
-		scope="request">
+		scope="prototype">
 	</bean>
 
 	<!-- iPPV -->
 	<bean id="subscriberPPVDAO" class="mx.izzi.admintool.dao.impl.SubscriberPPDAOImpl">
 	</bean>
 
-	<bean id="subscriberPPVBusiness" class="mx.izzi.admintool.business.impl.SubscriberPPVBusinessImpl">
+	<bean id="subscriberPPVBusiness"
+		class="mx.izzi.admintool.business.impl.SubscriberPPVBusinessImpl">
 		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
 
-	<bean id="iPPVAction" class="mx.izzi.admintool.action.IPPVAction"></bean>
+	<bean id="iPPVAction" class="mx.izzi.admintool.action.IPPVAction">
+	</bean>
+
+	<!-- JMS -->
+	<bean id="jmsAction" class="jms.test.action.JMSTestAction">
+	</bean>
+	<bean id="queueSend" class="jms.test.QueueSend">
+	</bean>
+
+
+	<!-- looking through jndi -->
+	<bean id="dataSourceJMS" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jms/myQueue" />
+	</bean>
+
+	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+		<property name="environment">
+			<props>
+				<prop key="java.naming.factory.initial">weblogic.jndi.WLInitialContextFactory</prop>
+				<prop key="java.naming.provider.url">t3://172.21.20.87:7001</prop>
+				<prop key="java.naming.security.principal">weblogic</prop>
+				<prop key="java.naming.security.credentials">weblogic1</prop>
+			</props>
+		</property>
+	</bean>
+
+
 
 </beans>

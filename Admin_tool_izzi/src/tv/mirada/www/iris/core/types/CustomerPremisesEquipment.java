@@ -447,8 +447,4 @@ public class CustomerPremisesEquipment  implements java.io.Serializable {
             _javaType, _xmlType, typeDesc);
     }
 
-    @Override
-    public String toString(){
-    	return type + ":" + hardwareId;
-    }
 }

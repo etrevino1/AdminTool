@@ -39,30 +39,7 @@ table.list, table.list td, table.list th {
 </script>
 </head>
 <body>
-	<s:url id="localeEN" namespace="/" action="locale">
-		<s:param name="request_locale">en</s:param>
-	</s:url>
-	<s:url id="localeES" namespace="/" action="locale">
-		<s:param name="request_locale">es</s:param>
-	</s:url>
-	<s:url id="localeDE" namespace="/" action="locale">
-		<s:param name="request_locale">de</s:param>
-	</s:url>
-	<s:url id="findCPE" namespace="/" action="findCPE">
-	</s:url>
-	<s:url id="viewUsers" namespace="/user" action="getUsers">
-	</s:url>
-	<s:url id="viewLog" namespace="/log" action="viewLog">
-	</s:url>
-	<s:a href="%{localeEN}">English</s:a>
-	<s:a href="%{localeES}">Español</s:a>
-	<s:a href="%{localeDE}">Deutsche</s:a>
-	<br />
-	<s:a href="%{findCPE}">CPE</s:a>
-	<s:a href="%{viewUsers}">Users</s:a>
-	<s:a href="%{viewLog}">Log</s:a>
-	<br />
-	<a href="<s:url action="index" namespace="config-browser" />">Launch the configuration browser</a>
+	<%@ include file="/jsp/menu.jsp"%>
 
 	<s:form method="post" action="/findSubscriber">
 		<table style="border: 1px solid black">
@@ -71,7 +48,7 @@ table.list, table.list td, table.list th {
 			<tr>
 				<td><label>Nodo:</label></td>
 
-				<td><select name="node" style="width:100%">
+				<td><select name="node" style="width: 100%">
 						<option disabled selected value>
 							<c:forEach var="row" items="${rs_node.rows}">
 								<option value='${row.mirada_node_code}'>${row.mirada_node_descr}</option>
@@ -104,23 +81,17 @@ table.list, table.list td, table.list th {
 				<td>${client.subscriber.irisId}</td>
 				<td>${client.subscriber.regionName}</td>
 				<td>${client.impulsePPVAllowed}</td>
-				<td>
-					<s:url id="deleteSubscriber" namespace="/suscriptor" action="deleteSubscriber">
+				<td><s:url id="deleteSubscriber" namespace="/suscriptor"
+						action="deleteSubscriber">
 						<s:param name="account">${account}</s:param>
-					</s:url> 
-					<s:url id="activate" namespace="/ird" action="activateAccount">
-					</s:url> 
-					<s:url id="deactivate" namespace="/ird" action="deactivateAccount">
+					</s:url> <s:url id="activate" namespace="/ird" action="activateAccount">
+					</s:url> <s:url id="deactivate" namespace="/ird" action="deactivateAccount">
 						<s:param name="subscriber">${account}</s:param>
-					</s:url> 
-					<s:url id="updateIPPV" namespace="/ippv" action="updateIPPV">
+					</s:url> <s:url id="updateIPPV" namespace="/ippv" action="updateIPPV">
 						<s:param name="account">${account}</s:param>
-					</s:url>
-					<s:a href="%{deleteSubscriber}">Delete</s:a>
-					<s:a href="%{activate}">Activate</s:a> 
-					<s:a href="%{deactivate}">Deactivate</s:a>
-					<s:a href="%{updateIPPV}">UpdateIPPV</s:a>
-				</td>
+					</s:url> <s:a href="%{deleteSubscriber}">Delete</s:a> <s:a
+						href="%{activate}">Activate</s:a> <s:a href="%{deactivate}">Deactivate</s:a>
+					<s:a href="%{updateIPPV}">UpdateIPPV</s:a></td>
 			</tr>
 		</table>
 	</c:if>
@@ -179,7 +150,7 @@ table.list, table.list td, table.list th {
 			</tr>
 			<tr>
 				<td><label>Nodo:</label></td>
-				<td><select name="type" style="width:100%">
+				<td><select name="type" style="width: 100%">
 						<option disabled selected value>
 							<c:forEach var="row" items="${rs_type.rows}">
 								<option value='${row.mirada_stb_type_name}'>${row.mirada_stb_type_descr}</option>
@@ -203,32 +174,22 @@ table.list, table.list td, table.list th {
 			</tr>
 			<c:forEach items="${client.equipment}" var="current">
 				<tr>
-					<td>
-						<s:url id="deleteCPE" namespace="/cpe" action="deleteCPE">
+					<td><s:url id="deleteCPE" namespace="/cpe" action="deleteCPE">
 							<s:param name="irisId">${current.irisId}</s:param>
 							<s:param name="account">${account}</s:param>
-						</s:url> 
-						<s:url id="sendMessage" namespace="/ird" action="showMessage">
+						</s:url> <s:url id="sendMessage" namespace="/ird" action="showMessage">
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
-						</s:url> 
-						<s:url id="rebootSTB" namespace="/ird" action="reboot">
+						</s:url> <s:url id="rebootSTB" namespace="/ird" action="reboot">
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
-						</s:url> 
-						<s:url id="restoreSTB" namespace="/ird" action="restore">
+						</s:url> <s:url id="restoreSTB" namespace="/ird" action="restore">
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
-						</s:url> 
-						<s:url id="enableSTB" namespace="/ird" action="enable">
+						</s:url> <s:url id="enableSTB" namespace="/ird" action="enable">
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
-						</s:url> 
-						<s:url id="disableSTB" namespace="/ird" action="disable">
+						</s:url> <s:url id="disableSTB" namespace="/ird" action="disable">
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
-						</s:url> 
-						<s:a href="%{deleteCPE}">Delete</s:a> 
-						<s:a href="%{sendMessage}">Message</s:a>
-						<s:a href="%{rebootSTB}">Reboot</s:a> 
-						<s:a href="%{restoreSTB}">Restore</s:a>
-						<s:a href="%{enableSTB}">Enable</s:a>
-						<s:a href="%{disableSTB}">Disable</s:a>
+						</s:url> <s:a href="%{deleteCPE}">Delete</s:a> <s:a href="%{sendMessage}">Message</s:a>
+						<s:a href="%{rebootSTB}">Reboot</s:a> <s:a href="%{restoreSTB}">Restore</s:a>
+						<s:a href="%{enableSTB}">Enable</s:a> <s:a href="%{disableSTB}">Disable</s:a>
 					</td>
 					<td>${current.irisId}</td>
 					<td>${current.hardwareId}</td>

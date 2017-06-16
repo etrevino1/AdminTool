@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Log View</title>
+<title>Users Admin</title>
 
 <style>
 table.list {
@@ -24,34 +24,44 @@ table.list, table.list td, table.list th {
 
 </head>
 <body>
-
 	<%@ include file="/jsp/menu.jsp"%>
 	<br>
-	<s:form method="post" action="/log/viewLog">
+
+	<s:form method="post" action="/user/createUser">
 		<table style="border: 1px solid black">
 			<s:textfield key="label.user" name="user" />
+			<s:textfield key="label.password" name="password" />
 			<tr>
-				<td colspan="2"><s:submit key="label.retrieve" type="button"
-						theme="simple" /></td>
+				<td colspan="2"><s:submit key="label.retrieve" type="button" theme="simple" /></td>
 			</tr>
 		</table>
 	</s:form>
+
 	<br>
 
 	<table class="list">
 		<tr>
-			<th align="left"><s:text name="label.date" /></th>
 			<th align="left"><s:text name="label.user" /></th>
-			<th align="left"><s:text name="label.action" /></th>
-			<th align="left"><s:text name="label.actionDetail" /></th>
+			<th align="left"><s:text name="label.actions" /></th>
 		</tr>
 
-		<c:forEach var="current" items="${logs}">
+		<c:forEach var="current" items="${users}">
 			<tr>
-				<td>${current.date}</td>
-				<td>${current.user}</td>
-				<td>${current.operation}</td>
-				<td>${current.detail}</td>
+				<td>${current.userName}</td>
+				<td> 
+					<s:url id="deleteUser" namespace="/user" action="deleteUser">
+						<s:param name="user">${current.userName}</s:param>
+					</s:url>
+					<s:url id="editUser" namespace="/user" action="getUserRoles">
+						<s:param name="user">${current.userName}</s:param>
+					</s:url>
+					
+					
+					<s:a href="%{deleteUser}">Delete</s:a>
+					<s:a href="%{editUser}">Edit</s:a>
+					
+					
+				</td>
 			</tr>
 		</c:forEach>
 	</table>
