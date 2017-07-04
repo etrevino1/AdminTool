@@ -20,6 +20,7 @@
 		</action>
 		<action name="luhn" class="miradaEquipoAction">
 			<result name="success">luhn.jsp</result>
+			<result name="error" type="redirectAction">findSubscriber</result>
 		</action>
 	</package>
 

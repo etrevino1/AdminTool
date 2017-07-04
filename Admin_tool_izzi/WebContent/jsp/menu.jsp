@@ -29,14 +29,26 @@
 	<s:a href="%{localeES}">Español</s:a>
 	<s:a href="%{localeDE}">Deutsche</s:a>
 	<br />
+	<% if(request.isUserInRole("admintool-access")){ %>
 	<s:a href="%{findSubscriber}">Subscriber</s:a>
+	<% } %>
+	<% if(request.isUserInRole("cpe-find")){ %>
 	<s:a href="%{findCPE}">CPE</s:a>
+	<% } %>
+	<% if(request.isUserInRole("user-get")){ %>
 	<s:a href="%{viewUsers}">Users</s:a>
+	<% } %>
+	<% if(request.isUserInRole("equipment")){ %>
 	<s:a href="%{equipos}">Equipos</s:a>
+	<% } %>
+	<% if(request.isUserInRole("log-query")){ %>
 	<s:a href="%{viewLog}">Log</s:a>
+	<% } %>
 	<br />
+	<% if(request.isUserInRole("admintool-admin")){ %>
 	<a href="<s:url action="index" namespace="config-browser" />">Launch
 		the configuration browser</a>
+	<% } %>
 	<br />
 </body>
 </html>

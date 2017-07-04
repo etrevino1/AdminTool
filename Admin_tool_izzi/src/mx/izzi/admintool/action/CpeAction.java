@@ -32,22 +32,30 @@ public class CpeAction extends ActionSupport implements SessionAware, ServletReq
 
 	public String execute(){
 		log.debug("CPE iris Id: " + irisId);
-		try{
-			this.cpeBusiness.deleteCPE(irisId, node, request.getUserPrincipal().getName());
-		}catch(NDSTransformationTVIException ndsttvie){
-			log.error(ndsttvie.getMessage());
+		if(request.isUserInRole("cpe-delete")){
+			try{
+				this.cpeBusiness.deleteCPE(irisId, node, request.getUserPrincipal().getName());
+			}catch(NDSTransformationTVIException ndsttvie){
+				log.error(ndsttvie.getMessage());
+			}
+			irisId=null;
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no delete cpe access");
 		}
-		irisId=null;
 		return SUCCESS;
 	}
 
 	public String addCPE(){
 		log.debug("CPE HardwareId " + hardwareId);
 		log.debug("CPE Type " + type);
-		try{
-			this.cpeBusiness.addCPE(account, hardwareId, type, node, request.getUserPrincipal().getName());
-		}catch(NDSTransformationTVIException ndsttvie){
-			log.error(ndsttvie.getMessage());
+		if(request.isUserInRole("cpe-add")){
+			try{
+				this.cpeBusiness.addCPE(account, hardwareId, type, node, request.getUserPrincipal().getName());
+			}catch(NDSTransformationTVIException ndsttvie){
+				log.error(ndsttvie.getMessage());
+			}
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no add cpe access");
 		}
 		return SUCCESS;
 	}
@@ -59,20 +67,24 @@ public class CpeAction extends ActionSupport implements SessionAware, ServletReq
 					@Result(name="error", location="findCPE", type="redirectAction")})
 	public String findCPE(){
 		log.debug("CpeAction - findCPE: hardwareId: " + hardwareId + ", node: " + node );
-
-		if(hardwareId != null){
-			try{
-				Subscriber subscriber = mixedBusiness.findCPESubscriber(hardwareId, node, request.getUserPrincipal().getName());
-				session.put("account", subscriber.getOperatorSubscriberId().getId());
-				session.put("node", node);
-			}catch(CPEException cpee){
-				return ERROR;
-			}catch(NDSTransformationTVIException ndsttvie){
-				log.error(ndsttvie.getMessage());
-				return ERROR;
+		if(request.isUserInRole("cpe-find")){
+			if(hardwareId != null){
+				try{
+					Subscriber subscriber = mixedBusiness.findCPESubscriber(hardwareId, node, request.getUserPrincipal().getName());
+					session.put("account", subscriber.getOperatorSubscriberId().getId());
+					session.put("node", node);
+				}catch(CPEException cpee){
+					return ERROR;
+				}catch(NDSTransformationTVIException ndsttvie){
+					log.error(ndsttvie.getMessage());
+					return ERROR;
+				}
+				return "found";
 			}
-			return "found";
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no find account by cpe access");
 		}
+
 
 		return SUCCESS;
 	}

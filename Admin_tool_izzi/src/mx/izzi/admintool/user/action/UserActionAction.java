@@ -23,16 +23,16 @@ import mx.izzi.admintool.user.dto.PlatformUserRoleDTO;
 public class UserActionAction extends ActionSupport implements SessionAware, ServletRequestAware {
 
 	static final long serialVersionUID = 1L;
-	
+
 	private Logger log = Logger.getLogger(this.getClass());
 	private Map<String, Object> session = null;
-	
-	private String user = null, password = null, role = null;
 
+	private String user = null, password = null, role = null;
+	private HttpServletRequest request = null;
 
 	private List<PlatformUserDTO> users = null;
 	private List<PlatformUserRoleDTO> userRoles = null;
-	
+
 	public List<PlatformUserDTO> getUsers() {
 		return users;
 	}
@@ -46,20 +46,25 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 	}
 
 	private UserActionBusiness userActionBusiness = null;
-	
+
 	@Action(
 			value="getUsers" ,
 			results={
-					@Result(name="success", location="../../../jsp/users/user.jsp")
+					@Result(name="success", location="../../../jsp/users/user.jsp"),
+					@Result(name="error", location="../findSubscriber", type="redirectAction")
 			}
 			)
 	public String execute(){
 		log.debug("UserActionAction - execute");
-		
-		users = userActionBusiness.getUsers();
-		return SUCCESS;
+		if(request.isUserInRole("user-get")){
+			users = userActionBusiness.getUsers();
+			return SUCCESS;
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no get user access");
+			return ERROR;
+		}
 	}
-	
+
 	@Action(
 			value="createUser" ,
 			results={
@@ -67,13 +72,16 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 			}
 			)
 	public String createUser(){
-		if(user != null && password != null && user.length() > 5 && password.length() > 5){
-			userActionBusiness.createUser(user, password);
+		if(request.isUserInRole("user-create")){
+			if(user != null && password != null && user.length() > 5 && password.length() > 5){
+				userActionBusiness.createUser(user, password);
+			}
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no create user access");
 		}
-		
 		return SUCCESS;
 	}
-	
+
 	@Action(
 			value="deleteUser" ,
 			results={
@@ -82,13 +90,17 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 			)
 	public String deleteUser(){
 		log.debug("Delete user: " + user);
-		if(user != null && user.length() > 5){
-			userActionBusiness.deleteUser(user);
+		if(request.isUserInRole("user-delete")){
+			if(user != null && user.length() > 5){
+				userActionBusiness.deleteUser(user);
+			}
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no delete user access");
 		}
-		
+
 		return SUCCESS;
 	}
-	
+
 	@Action(
 			value="getUserRoles" ,
 			results={
@@ -97,16 +109,19 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 			)
 	public String getUserRole(){
 		log.debug("Edit user: " + user);
-		if(user != null && user.length() > 5){
-			session.put("user", user);
+		if(request.isUserInRole("user-role")){
+			if(user != null && user.length() > 5){
+				session.put("user", user);
+			}else{
+				user = (String)session.get("user");
+			}
+			userRoles = userActionBusiness.getUserRoles(user);
 		}else{
-			user = (String)session.get("user");
+			log.debug(request.getUserPrincipal().getName() + ": has no role user access");
 		}
-		userRoles = userActionBusiness.getUserRoles(user);
-		
 		return SUCCESS;
 	}
-	
+
 	@Action(
 			value="deleteUserRole" ,
 			results={
@@ -114,13 +129,16 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 			}
 			)
 	public String deleteUserRole(){
-		if(user != null && user.length() > 5){
-			userActionBusiness.deleteUserRole(user, role);
+		if(request.isUserInRole("user-deleteRole")){
+			if(user != null && user.length() > 5){
+				userActionBusiness.deleteUserRole(user, role);
+			}
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no delete role user access");
 		}
-		
 		return SUCCESS;
 	}
-	
+
 	@Action(
 			value="assignUserRole" ,
 			results={
@@ -129,32 +147,29 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 			)
 	public String assignUserRole(){
 		log.debug("Edit user: " + user);
-		user = (String)session.get("user");
-		if(user != null && user.length() > 5 && role != null && role.length() > 2){
-			userActionBusiness.assignUserRole(user, role);
+		if(request.isUserInRole("user-addRole")){
+			user = (String)session.get("user");
+			if(user != null && user.length() > 5 && role != null && role.length() > 2){
+				userActionBusiness.assignUserRole(user, role);
+			}
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no add role user access");
 		}
-		
+
 		return SUCCESS;
 	}
-	
+
 	public List<PlatformUserRoleDTO> getUserRoles() {
 		return userRoles;
 	}
 
-	
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
 	@Autowired
 	public void setUserActionBusiness(UserActionBusiness userActionBusiness) {
 		this.userActionBusiness = userActionBusiness;
-	}
-
-	@Override
-	public void setServletRequest(HttpServletRequest arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -162,4 +177,8 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 		this.session = session;
 	}
 
+	@Override
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
 }

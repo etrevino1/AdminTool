@@ -33,7 +33,7 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 	@Override
 	public String execute () {
 		log.debug("SubscriberAction - execute : " + account + ", " + irisId + ", " + node);
-		
+
 		if(request.isUserInRole("tomcat")){
 			log.debug("Has it");
 		}else{
@@ -41,8 +41,8 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 			log.debug("does???");
 			return LOGIN;
 		}
-		
-		
+
+
 		if(account == null && irisId == null){
 			return SUCCESS;
 		}
@@ -64,16 +64,23 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 	}
 
 	public String newSubscriber(){
-		if(getSubscriberBusiness().newSubscriber(account, region, node, request.getUserPrincipal().getName()))
-			return SUCCESS;
+		if(request.isUserInRole("subscriber-new")){
+			if(getSubscriberBusiness().newSubscriber(account, region, node, request.getUserPrincipal().getName()))
+				return SUCCESS;
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no create user access");
+		}
 		return ERROR;
 	}
 
 	public String deleteSubscriber(){
-		getSubscriberBusiness().deleteSubscriber((String)session.get("account"), node, request.getUserPrincipal().getName());
-		session.remove("account");
-		account = null;
-
+		if(request.isUserInRole("subscriber-delete")){
+			getSubscriberBusiness().deleteSubscriber((String)session.get("account"), node, request.getUserPrincipal().getName());
+			session.remove("account");
+			account = null;
+		}else{
+			log.debug(request.getUserPrincipal().getName() + ": has no delete user access");
+		}
 		return SUCCESS;
 	}
 
@@ -84,7 +91,7 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 		if(session != null && !session.isEmpty()){
 			log.debug("valid");
 			log.debug("Node=" + node);
-			
+
 			if(node == null || node == ""){
 				node = (String)session.get("node");
 				if(node == null){
@@ -99,7 +106,7 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 		}else{
 			log.debug("Not valid");
 		}
-		
+
 
 	}
 

@@ -78,7 +78,7 @@ public class SubscriberPPDAOImpl implements SubscriberPPVDAO {
 		SUBSCRIBERPPVSoap11Stub ss = null;
 		SUBSCRIBERPPVServiceLocator locator = new SUBSCRIBERPPVServiceLocator();
 		try{
-			log.fatal("URL=" + DetermineNode.getService(node, "ippv"));
+			log.debug("URL=" + DetermineNode.getService(node, "ippv"));
 			ss = new SUBSCRIBERPPVSoap11Stub(new URL(DetermineNode.getService(node, "ippv")), locator);
 		}catch(AxisFault af){
 			log.error(af.getMessage());

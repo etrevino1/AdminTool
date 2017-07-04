@@ -40,7 +40,7 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String execute(){
 		logger.debug("IRDAction - execute");
-		if(session != null){
+		if(request.isUserInRole("subscriber-activate")){
 			logger.debug("valid session");
 			try{
 				mixedBusiness.activateAccount((String)session.get("account"), (String)session.get("node"), request.getUserPrincipal().getName());
@@ -48,7 +48,7 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 				logger.error(ndsttvie.getMessage());
 			}
 		}else{
-			logger.debug("not-valid session");
+			logger.debug(request.getUserPrincipal().getName() + ": has no activate account access");
 		}
 
 
@@ -63,7 +63,10 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String deactivateAccount(){
 		try{
-			mixedBusiness.deactivateAccount((String)session.get("account"), (String)session.get("node"), request.getUserPrincipal().getName());
+			if(request.isUserInRole("subscriber-deactivate"))
+				mixedBusiness.deactivateAccount((String)session.get("account"), (String)session.get("node"), request.getUserPrincipal().getName());
+			else
+				logger.debug(request.getUserPrincipal().getName() + ": has no deactivate account access");
 		}catch(NDSTransformationTVIException ndsttvie){
 			logger.error(ndsttvie.getMessage());
 		}
@@ -78,10 +81,14 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String sendMessage(){
 		logger.debug("Prueba de comunicación, " + hardwareId + ", " + (String)session.get("node"));
-		try{
-			iRDBusiness.sendMessage("Prueba de comunicación", hardwareId, false, (String)session.get("node"), request.getUserPrincipal().getName());
-		}catch(NDSTransformationTVIException ndsttvie){
-			logger.error(ndsttvie.getMessage());
+		if(request.isUserInRole("cpe-message")){
+			try{
+				iRDBusiness.sendMessage("Prueba de comunicación", hardwareId, false, (String)session.get("node"), request.getUserPrincipal().getName());
+			}catch(NDSTransformationTVIException ndsttvie){
+				logger.error(ndsttvie.getMessage());
+			}
+		}else{
+			logger.debug(request.getUserPrincipal().getName() + ": has no message access");
 		}
 		return SUCCESS;
 	}
@@ -94,10 +101,14 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String rebootSTB(){
 		logger.debug("IRDAction - rebootSTB");
-		try{
-			iRDBusiness.rebootSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
-		}catch(NDSTransformationTVIException ndsttvie){
-			logger.error(ndsttvie.getMessage());
+		if(request.isUserInRole("cpe-reboot")){
+			try{
+				iRDBusiness.rebootSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+			}catch(NDSTransformationTVIException ndsttvie){
+				logger.error(ndsttvie.getMessage());
+			}
+		}else{
+			logger.debug(request.getUserPrincipal().getName() + ": has no reboot cpe access");
 		}
 		return SUCCESS;
 	}
@@ -110,10 +121,14 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String restoreSTB(){
 		logger.debug("IRDAction - restoreSTB");
-		try{
-			iRDBusiness.restoreSTB(hardwareId, "FULL", (String)session.get("node"), request.getUserPrincipal().getName());
-		}catch(NDSTransformationTVIException ndsttvie){
-			logger.error(ndsttvie.getMessage());
+		if(request.isUserInRole("cpe-restore")){
+			try{
+				iRDBusiness.restoreSTB(hardwareId, "FULL", (String)session.get("node"), request.getUserPrincipal().getName());
+			}catch(NDSTransformationTVIException ndsttvie){
+				logger.error(ndsttvie.getMessage());
+			}
+		}else{
+			logger.debug(request.getUserPrincipal().getName() + ": has no restore cpe access");
 		}
 		return SUCCESS;
 	}
@@ -126,10 +141,14 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String enableSTB(){
 		logger.debug("IRDAction - enableSTB: " + hardwareId);
-		try{
-			iRDBusiness.enableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
-		}catch(NDSTransformationTVIException ndsttvie){
-			logger.error(ndsttvie.getMessage());
+		if(request.isUserInRole("cpe-enable")){
+			try{
+				iRDBusiness.enableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+			}catch(NDSTransformationTVIException ndsttvie){
+				logger.error(ndsttvie.getMessage());
+			}
+		}else{
+			logger.debug(request.getUserPrincipal().getName() + ": has no enable cpe access");
 		}
 		return SUCCESS;
 	}
@@ -142,10 +161,14 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 			)
 	public String disableSTB(){
 		logger.debug("IRDAction - disableSTB: " + hardwareId);
-		try{
-			iRDBusiness.disableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
-		}catch(NDSTransformationTVIException ndsttvie){
-			logger.error(ndsttvie.getMessage());
+		if(request.isUserInRole("cpe-disable")){
+			try{
+				iRDBusiness.disableSTB(hardwareId, (String)session.get("node"), request.getUserPrincipal().getName());
+			}catch(NDSTransformationTVIException ndsttvie){
+				logger.error(ndsttvie.getMessage());
+			}
+		}else{
+			logger.debug(request.getUserPrincipal().getName() + ": has no disable cpe access");
 		}
 		return SUCCESS;
 	}
