@@ -104,7 +104,8 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 	@Action(
 			value="getUserRoles" ,
 			results={
-					@Result(name="success", location="../../../jsp/users/userRoles.jsp")
+					@Result(name="success", location="../../../jsp/users/userRoles.jsp"),
+					@Result(name="error", location="..//findSubscriber", type="redirectAction")
 			}
 			)
 	public String getUserRole(){
@@ -116,10 +117,11 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 				user = (String)session.get("user");
 			}
 			userRoles = userActionBusiness.getUserRoles(user);
+			return SUCCESS;
 		}else{
 			log.debug(request.getUserPrincipal().getName() + ": has no role user access");
+			return ERROR;
 		}
-		return SUCCESS;
 	}
 
 	@Action(
