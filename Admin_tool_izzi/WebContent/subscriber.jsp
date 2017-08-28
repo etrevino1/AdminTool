@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <sql:query var="rs" dataSource="jdbc/tomcat_realm">
-	call spr_mirada_package;
+	call spr_mirada_package ('mex');
 </sql:query>
 
 <sql:query var="rs_type" dataSource="jdbc/tomcat_realm">
@@ -64,10 +64,10 @@ table.list, table.list td, table.list th {
 	</s:form>
 
 
-	<h3>
-		<s:text name="label.clients" />
-	</h3>
 	<c:if test="${!empty client}">
+		<h3>
+			<s:text name="label.clients" />
+		</h3>
 		<table class="list">
 			<tr>
 				<th align="left"><s:text name="label.nickname" /></th>
@@ -94,14 +94,13 @@ table.list, table.list td, table.list th {
 					<s:a href="%{updateIPPV}">UpdateIPPV</s:a></td>
 			</tr>
 		</table>
-	</c:if>
+	
 	</br>
 	<h3>
 		<s:text name="label.package" />
 	</h3>
 
 	<s:form method="post" namespace="/service" action="addPackage">
-		<%-- 		<s:textfield key="label.package" name="irisPackage"></s:textfield> --%>
 		<td><label>Paquete:</label></td>
 		<td><select name="irisPackage">
 				<option disabled selected value>
@@ -109,6 +108,8 @@ table.list, table.list td, table.list th {
 						<option value='${row.package_name}'>${row.package_name}</option>
 					</c:forEach>
 		</select></td>
+		
+		<s:textfield key="label.hardwareId" name="hardwareId"></s:textfield>
 
 
 		<s:submit key="label.send"></s:submit>
@@ -149,7 +150,7 @@ table.list, table.list td, table.list th {
 				<td><s:textfield key="label.hardwareId" name="hardwareId"></s:textfield></td>
 			</tr>
 			<tr>
-				<td><label>Nodo:</label></td>
+				<td><label>Tipo:</label></td>
 				<td><select name="type" style="width: 100%">
 						<option disabled selected value>
 							<c:forEach var="row" items="${rs_type.rows}">
@@ -187,9 +188,32 @@ table.list, table.list td, table.list th {
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
 						</s:url> <s:url id="disableSTB" namespace="/ird" action="disable">
 							<s:param name="hardwareId">${current.hardwareId}</s:param>
-						</s:url> <s:a href="%{deleteCPE}">Delete</s:a> <s:a href="%{sendMessage}">Message</s:a>
-						<s:a href="%{rebootSTB}">Reboot</s:a> <s:a href="%{restoreSTB}">Restore</s:a>
-						<s:a href="%{enableSTB}">Enable</s:a> <s:a href="%{disableSTB}">Disable</s:a>
+						</s:url> 
+						
+						<s:url id="resetPin" namespace="/ird" action="resetPin">
+							<s:param name="hardwareId">${current.hardwareId}</s:param>
+						</s:url>
+						<% if(request.isUserInRole("cpe-resetpin")){ %>
+						<s:a href="%{resetPin}">ResetPin</s:a>
+						<% } %>
+						<% if(request.isUserInRole("cpe-delete")){ %>
+						<s:a href="%{deleteCPE}">Delete</s:a> 
+						<% } %>
+						<% if(request.isUserInRole("cpe-message")){ %>
+						<s:a href="%{sendMessage}">Message</s:a>
+						<% } %>
+						<% if(request.isUserInRole("cpe-reboot")){ %>
+						<s:a href="%{rebootSTB}">Reboot</s:a> 
+						<% } %>
+						<% if(request.isUserInRole("cpe-restore")){ %>
+						<s:a href="%{restoreSTB}">Restore</s:a>
+						<% } %>
+						<% if(request.isUserInRole("cpe-enable")){ %>
+						<s:a href="%{enableSTB}">Enable</s:a> 
+						<% } %>
+						<% if(request.isUserInRole("cpe-disable")){ %>
+						<s:a href="%{disableSTB}">Disable</s:a>
+						<% } %>
 					</td>
 					<td>${current.irisId}</td>
 					<td>${current.hardwareId}</td>
@@ -199,7 +223,7 @@ table.list, table.list td, table.list th {
 			</c:forEach>
 		</table>
 	</c:if>
-
+</c:if>
 
 
 </body>

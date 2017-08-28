@@ -1,17 +1,21 @@
 package mx.izzi.admintool.user.dao.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mx.izzi.admintool.admin.service.dto.ServicePackageDTO;
 import mx.izzi.admintool.user.dao.UserActionDAO;
+import mx.izzi.admintool.user.dao.sp.PlatformRoleSPR;
 import mx.izzi.admintool.user.dao.sp.PlatformUserRoleSPD;
 import mx.izzi.admintool.user.dao.sp.PlatformUserRoleSPI;
 import mx.izzi.admintool.user.dao.sp.PlatformUserRolesSPR;
 import mx.izzi.admintool.user.dao.sp.PlatformUserSPD;
 import mx.izzi.admintool.user.dao.sp.PlatformUserSPI;
 import mx.izzi.admintool.user.dao.sp.PlatformUserSPR;
+import mx.izzi.admintool.user.dto.PlatformRoleDTO;
 import mx.izzi.admintool.user.dto.PlatformUserDTO;
 import mx.izzi.admintool.user.dto.PlatformUserRoleDTO;
 
@@ -25,6 +29,8 @@ public class UserActionDAOImpl implements UserActionDAO {
 	private PlatformUserRolesSPR platformUserRolesSPR = null;
 	private PlatformUserRoleSPD platformUserRoleSPD = null;
 	private PlatformUserRoleSPI platformUserRoleSPI = null;
+	
+	private PlatformRoleSPR platformRoleSPR = null;
 
 
 
@@ -65,6 +71,14 @@ public class UserActionDAOImpl implements UserActionDAO {
 		platformUserRoleSPI.execute(userRole);
 	}
 	
+	@Override
+	public List<PlatformRoleDTO> getUserNotRoles(String user){
+		log.debug("UserActionDAOImpl - getUserNotRoles");
+		Map<?, ?> data = this.platformRoleSPR.execute(user);
+		return (List<PlatformRoleDTO>)data.get("RESULT_LIST");
+		
+	}
+	
 	@Autowired
 	public void setPlatformUserSPR(PlatformUserSPR platformUserSPR) {
 		this.platformUserSPR = platformUserSPR;
@@ -93,5 +107,10 @@ public class UserActionDAOImpl implements UserActionDAO {
 	@Autowired
 	public void setPlatformUserRoleSPI(PlatformUserRoleSPI platformUserRoleSPI) {
 		this.platformUserRoleSPI = platformUserRoleSPI;
+	}
+
+	@Autowired
+	public void setPlatformRoleSPR(PlatformRoleSPR platformRoleSPR) {
+		this.platformRoleSPR = platformRoleSPR;
 	}
 }

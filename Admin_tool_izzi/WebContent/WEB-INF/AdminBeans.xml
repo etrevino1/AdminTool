@@ -128,6 +128,9 @@
 	</bean>
 	<bean id="platformUserRoleSPD" class="mx.izzi.admintool.user.dao.sp.PlatformUserRoleSPD">
 	</bean>
+	
+	<bean id="platformRoleSPR" class="mx.izzi.admintool.user.dao.sp.PlatformRoleSPR">
+	</bean>
 
 	<bean id="userActionDAO" class="mx.izzi.admintool.user.dao.impl.UserActionDAOImpl">
 	</bean>
@@ -149,7 +152,34 @@
 		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
 
+	<bean id="ippvDAO" class="mx.izzi.admintool.ppv.dao.impl.IPPVDAOImpl">
+	</bean>
+
+	<bean id="ippvBusiness"
+		class="mx.izzi.admintool.ppv.business.impl.IPPVBusinessImpl">
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
+	</bean>
+
 	<bean id="iPPVAction" class="mx.izzi.admintool.action.IPPVAction">
+	</bean>
+
+	<!-- Service Package -->
+	<bean id="servicePackageSPD" class="mx.izzi.admintool.admin.service.dao.sp.ServicePackageSPD">
+	</bean>
+	<bean id="servicePackageSPI" class="mx.izzi.admintool.admin.service.dao.sp.ServicePackageSPI">
+	</bean>
+	<bean id="servicePackageSPR" class="mx.izzi.admintool.admin.service.dao.sp.ServicePackageSPR">
+	</bean>
+	
+	<bean id="servicePackageDAO" class="mx.izzi.admintool.admin.service.dao.impl.ServicePackageDAOImpl">
+	</bean>
+	
+	<bean id="servicePackageBusiness"
+		class="mx.izzi.admintool.admin.service.business.impl.ServicePackageBusinessImpl">
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
+	</bean>
+	
+	<bean id="servicePackageAction" class="mx.izzi.admintool.admin.service.action.ServicePackageAction">
 	</bean>
 
 	<!-- LDAP 

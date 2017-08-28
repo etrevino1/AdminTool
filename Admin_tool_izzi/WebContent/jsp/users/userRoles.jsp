@@ -3,12 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
-
-<sql:query var="rs_roles" dataSource="jdbc/tomcat_realm">
-	call spr_tomcat_roles;
-</sql:query>
 
 <html>
 <head>
@@ -39,8 +34,8 @@ table.list, table.list td, table.list th {
 				<td><label>Role:</label></td>
 				<td><select name="role" style="width:100%">
 						<option disabled selected value>
-							<c:forEach var="row" items="${rs_roles.rows}">
-								<option value='${row.role_name}'>${row.role_name}</option>
+							<c:forEach var="row" items="${userNotRoles}">
+								<option value='${row.roleName}'>${row.roleName}</option>
 							</c:forEach>
 				</select></td>
 			</tr>

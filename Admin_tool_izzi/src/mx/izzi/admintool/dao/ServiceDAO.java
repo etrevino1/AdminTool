@@ -7,5 +7,5 @@ public interface ServiceDAO {
 	public SubscribeToPackageResponse addPackage(String account, String irisPackage);
 	
 	public boolean deletePackage(String irisId, String region);
-	public SubscribeToPackageResponse addPackage(String account, String irisPackage, String region);
+	public SubscribeToPackageResponse addPackage(String account, String irisPackage, String hardwareId, String region);
 }

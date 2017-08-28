@@ -94,6 +94,27 @@ public class IRDAction extends ActionSupport implements SessionAware, ServletReq
 	}
 
 	@Action(
+			value="resetPin",
+			results={
+					@Result(name="success", location="../findSubscriber", type="redirectAction")
+			}
+			)
+	public String resetPin(){
+		logger.debug("Reset Pin 1111");
+		if(request.isUserInRole("cpe-resetpin")){
+			try{
+				iRDBusiness.resetPin(hardwareId, (String)session.get("node"));
+			}catch(NDSTransformationTVIException ndsttvie){
+				logger.error(ndsttvie.getMessage());
+			}
+		}else{
+			logger.debug(request.getUserPrincipal().getName() + ": has no reset access");
+		}
+		return SUCCESS;
+	}
+
+
+	@Action(
 			value="reboot",
 			results={
 					@Result(name="success", location="../findSubscriber", type="redirectAction")

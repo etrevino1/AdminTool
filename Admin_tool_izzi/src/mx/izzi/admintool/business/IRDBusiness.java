@@ -4,6 +4,7 @@ import mx.izzi.admintool.exception.NDSTransformationTVIException;
 import tv.mirada.www.iris.core.types.CustomerPremisesEquipment;
 
 public interface IRDBusiness {
+	public void resetPin(String hardwareId, String node) throws NDSTransformationTVIException;
 	public void enableCPE(CustomerPremisesEquipment equipo, String node, String user) throws NDSTransformationTVIException;
 	public void enableSTB(String hardwareId, String node, String user) throws NDSTransformationTVIException;
 	public void disableCPE(CustomerPremisesEquipment equipo, String node, String user) throws NDSTransformationTVIException;

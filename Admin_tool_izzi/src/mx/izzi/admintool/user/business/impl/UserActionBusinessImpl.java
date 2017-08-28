@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import mx.izzi.admintool.user.business.UserActionBusiness;
 import mx.izzi.admintool.user.dao.UserActionDAO;
+import mx.izzi.admintool.user.dto.PlatformRoleDTO;
 import mx.izzi.admintool.user.dto.PlatformUserDTO;
 import mx.izzi.admintool.user.dto.PlatformUserRoleDTO;
 
@@ -45,6 +46,11 @@ public class UserActionBusinessImpl implements UserActionBusiness {
 	public void assignUserRole(String user, String role){
 		PlatformUserRoleDTO userRole = new PlatformUserRoleDTO(user, role);
 		userActionDAO.assignUserRole(userRole);
+	}
+	
+	@Override
+	public List<PlatformRoleDTO> getUserNotRoles(String user){
+		return this.userActionDAO.getUserNotRoles(user);
 	}
 	
 	@Autowired

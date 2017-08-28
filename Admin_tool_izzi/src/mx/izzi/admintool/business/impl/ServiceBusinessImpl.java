@@ -27,10 +27,10 @@ public class ServiceBusinessImpl extends LogUserOperationBusinessImpl implements
 	}
 	
 	@Override
-	public SubscribeToPackageResponse addPackage(String account, String irisPackage, String node, String user){
+	public SubscribeToPackageResponse addPackage(String account, String irisPackage, String hardwareId, String node, String user){
 		log.debug("ServiceBusinessImpl - addPackage");
 		logUserOperation(new LogUserOperationDTO(user, "addPackage", "addPackage: " + irisPackage + ", Account" + account, new Timestamp(Calendar.getInstance().getTimeInMillis())));
-		return this.serviceDAO.addPackage(account, irisPackage, node);
+		return this.serviceDAO.addPackage(account, irisPackage, hardwareId, node);
 	}
 
 	public void setServiceDAO(ServiceDAO serviceDAO) {

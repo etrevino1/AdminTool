@@ -6,6 +6,7 @@ public interface IRDCommandsDAO {
 	public void enableSTB(String hardwareId);
 	public void rebootSTB(String hardwareId); 
 	
+	public void resetPin(String hardwareId, String node);
 	public void enableSTB(String hardwareId, String node);
 	public void disableSTB(String hardwareId, String node);
 	public void rebootSTB(String hardwareId, String node); 

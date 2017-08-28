@@ -10,6 +10,7 @@ import org.springframework.remoting.soap.SoapFaultException;
 import tv.mirada.www.iris.core.service.messages.SubscribeToPackageRequest;
 import tv.mirada.www.iris.core.service.messages.SubscribeToPackageResponse;
 import tv.mirada.www.iris.core.service.messages.UnsubscribeFromPackageRequest;
+import tv.mirada.www.iris.core.types.CustomerPremisesEquipmentId;
 import tv.mirada.www.iris.core.types.OperatorSubscriberId;
 import tv.mirada.www.iris.core.types.PackageId;
 import tv.mirada.www.iris.core.types.PackageSubscriberId;
@@ -38,11 +39,11 @@ public class ServiceDAOImpl implements ServiceDAO{
 	}
 	
 	public SubscribeToPackageResponse addPackage(String account, String irisPackage){
-		return addPackage(account, irisPackage, "mex");
+		return addPackage(account, irisPackage, "", "mex");
 	}
 	
-	public SubscribeToPackageResponse addPackage(String account, String irisPackage, String region){
-		SubscribeToPackageRequest request = addPackageRequest(account, irisPackage);
+	public SubscribeToPackageResponse addPackage(String account, String irisPackage, String hardwareId, String region){
+		SubscribeToPackageRequest request = addPackageRequest(account, irisPackage, hardwareId);
 		try{
 			log.debug(request.toString());
 			getStub(region).subscribeToPackage(request);
@@ -56,7 +57,7 @@ public class ServiceDAOImpl implements ServiceDAO{
 		return null;
 	}
 	
-	private SubscribeToPackageRequest addPackageRequest(String account, String irisPackage){
+	private SubscribeToPackageRequest addPackageRequest(String account, String irisPackage, String hardwareId){
 		SubscribeToPackageRequest request = new SubscribeToPackageRequest();
 		
 		OperatorSubscriberId operatorSubscriberId = new OperatorSubscriberId("IZZI", account);
@@ -66,6 +67,12 @@ public class ServiceDAOImpl implements ServiceDAO{
 		
 		PackageId packageId = new PackageId();
 		packageId.setName(irisPackage);
+		
+		if(hardwareId.length() == 9){
+			CustomerPremisesEquipmentId customerPremisesEquipmentId = new CustomerPremisesEquipmentId();
+			customerPremisesEquipmentId.setHardwareId(hardwareId);
+			request.setCustomerPremisesEquipmentId(customerPremisesEquipmentId);
+		}
 		
 		request.setPackageSubscriberId(packageSubscriberId);
 		request.setPackageId(packageId);

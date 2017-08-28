@@ -21,6 +21,16 @@ public class IRDBusinessImpl extends LogUserOperationBusinessImpl implements IRD
 	private IRDCommandsDAO iRDCommandsDAO = null;
 
 	@Override
+	public void resetPin(String hardwareId, String node) throws NDSTransformationTVIException{
+		if(hardwareId.length() == 16){
+			if(node.equals("mty")){
+				hardwareId = NDSTransformationTVI.createNDSChipID(hardwareId);
+			}
+			iRDCommandsDAO.resetPin(hardwareId, node);
+		}
+	}
+	
+	@Override
 	public void enableCPE(CustomerPremisesEquipment equipo, String node, String user) throws NDSTransformationTVIException{
 		if(equipo.getHardwareId().length() == 16){
 			String hardwareId = equipo.getHardwareId();

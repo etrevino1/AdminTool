@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.ActionSupport;
 
 import mx.izzi.admintool.user.business.UserActionBusiness;
+import mx.izzi.admintool.user.dto.PlatformRoleDTO;
 import mx.izzi.admintool.user.dto.PlatformUserDTO;
 import mx.izzi.admintool.user.dto.PlatformUserRoleDTO;
 
@@ -32,6 +33,7 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 
 	private List<PlatformUserDTO> users = null;
 	private List<PlatformUserRoleDTO> userRoles = null;
+	private List<PlatformRoleDTO> userNotRoles = null;
 
 	public List<PlatformUserDTO> getUsers() {
 		return users;
@@ -117,6 +119,7 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 				user = (String)session.get("user");
 			}
 			userRoles = userActionBusiness.getUserRoles(user);
+			userNotRoles = userActionBusiness.getUserNotRoles(user);
 			return SUCCESS;
 		}else{
 			log.debug(request.getUserPrincipal().getName() + ": has no role user access");
@@ -167,6 +170,14 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public List<PlatformRoleDTO> getUserNotRoles() {
+		return userNotRoles;
+	}
+
+	public void setUserNotRoles(List<PlatformRoleDTO> userNotRoles) {
+		this.userNotRoles = userNotRoles;
 	}
 
 	@Autowired

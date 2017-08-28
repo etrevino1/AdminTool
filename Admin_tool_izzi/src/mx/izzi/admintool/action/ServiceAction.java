@@ -21,7 +21,7 @@ public class ServiceAction extends ActionSupport implements SessionAware, Servle
 
 	private ServiceBusiness serviceBusiness;
 
-	private String irisId = null, account = null, irisPackage = null, node = null;
+	private String irisId = null, account = null, irisPackage = null, node = null, hardwareId = null;
 
 	public String execute(){
 		log.debug("Service iris Id" + irisId);
@@ -37,8 +37,9 @@ public class ServiceAction extends ActionSupport implements SessionAware, Servle
 	public String addPackage(){
 		log.debug("Service irisPackage:" + irisPackage);
 		log.debug("Service account:" + account);
+		log.debug("Service HardwareId: " + hardwareId);
 		if(request.isUserInRole("service-subscribe")){
-			this.serviceBusiness.addPackage(account, irisPackage, node, request.getUserPrincipal().getName());
+			this.serviceBusiness.addPackage(account, irisPackage, hardwareId, node, request.getUserPrincipal().getName());
 		}else{
 			log.debug(request.getUserPrincipal().getName() + ": has no subscribe to package access");
 		}
@@ -64,6 +65,14 @@ public class ServiceAction extends ActionSupport implements SessionAware, Servle
 
 	public void setServiceBusiness(ServiceBusiness serviceBusiness) {
 		this.serviceBusiness = serviceBusiness;
+	}
+
+	public String getHardwareId() {
+		return hardwareId;
+	}
+
+	public void setHardwareId(String hardwareId) {
+		this.hardwareId = hardwareId;
 	}
 
 	@Override

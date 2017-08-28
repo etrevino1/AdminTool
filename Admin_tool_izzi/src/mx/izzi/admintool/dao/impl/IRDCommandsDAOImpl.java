@@ -13,6 +13,7 @@ import tv.mirada.www.iris.core.ird.messages.DisableSTBRequest;
 import tv.mirada.www.iris.core.ird.messages.EnableSTBRequest;
 import tv.mirada.www.iris.core.ird.messages.Message;
 import tv.mirada.www.iris.core.ird.messages.RebootSTBRequest;
+import tv.mirada.www.iris.core.ird.messages.ResetPINRequest;
 import tv.mirada.www.iris.core.ird.messages.RestoreClass;
 import tv.mirada.www.iris.core.ird.messages.RestoreSTBRequest;
 import tv.mirada.www.iris.core.ird.messages.ShowOSDMessageRequest;
@@ -22,6 +23,16 @@ import tv.mirada.www.iris.core.types.IrdSoap11Stub;
 public class IRDCommandsDAOImpl implements IRDCommandsDAO {
 
 	private Logger log = Logger.getLogger(this.getClass());
+
+	@Override
+	public void resetPin(String hardwareId, String node){
+		ResetPINRequest request = getResetPinRequest(hardwareId);
+		try{
+			getStub(node).resetPIN(request);
+		}catch(RemoteException re){
+			log.error(re.getMessage());
+		}
+	}
 
 	@Override
 	public void enableSTB(String hardwareId) {
@@ -92,6 +103,10 @@ public class IRDCommandsDAOImpl implements IRDCommandsDAO {
 			re.printStackTrace();
 		}
 		log.info("IRDommandsDAO - restoreSTB: " + hardwareId + ", " + restoreClass.toString());
+	}
+
+	private ResetPINRequest getResetPinRequest(String hardwareId){
+		return new ResetPINRequest(hardwareId, null, null);
 	}
 
 	private EnableSTBRequest getEnableSTBRequest(String hardwareId){
