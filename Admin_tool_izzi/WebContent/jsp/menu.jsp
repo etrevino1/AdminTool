@@ -25,6 +25,8 @@
 	</s:url>
 	<s:url id="equipos" namespace="/" action="luhn">
 	</s:url>
+	<s:url id="ippv" namespace="/ippv" action="ippv">
+	</s:url>
 	<s:a href="%{localeEN}">English</s:a>
 	<s:a href="%{localeES}">Español</s:a>
 	<s:a href="%{localeDE}">Deutsche</s:a>
@@ -44,6 +46,7 @@
 	<% if(request.isUserInRole("log-query")){ %>
 	<s:a href="%{viewLog}">Log</s:a>
 	<% } %>
+	<s:a href="%{ippv}">iPPV</s:a>
 	<br />
 	<% if(request.isUserInRole("admintool-admin")){ %>
 	<a href="<s:url action="index" namespace="config-browser" />">Launch

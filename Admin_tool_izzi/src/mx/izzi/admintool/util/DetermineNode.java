@@ -8,7 +8,8 @@ public class DetermineNode {
 	private static final String SERVICE = "/managetv/prov/services/";
 	private static final String DEVICE = "/managetv/prov/devices/";
 	private static final String IRD = "/managetv/prov/ird/";
-	private static final String IPPV = "/managetv/ppv/subscriberppv/";
+	private static final String PPV = "/managetv/ppv/subscriberppv/";
+	private static final String IPPV = "/managetv/ppv/payperview/";
 	
 	
 	public static String getService(String node, String service) throws Exception{
@@ -35,6 +36,9 @@ public class DetermineNode {
 			break;
 		case "ird":
 			address += IRD;
+			break;
+		case "ppv":
+			address += PPV;
 			break;
 		case "ippv":
 			address += IPPV;
