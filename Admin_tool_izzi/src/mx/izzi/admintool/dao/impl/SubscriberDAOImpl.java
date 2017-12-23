@@ -83,7 +83,7 @@ public class SubscriberDAOImpl implements SubscriberDAO {
 		subscriber.setCreationDatetime(new GregorianCalendar());
 		subscriber.setGender(Gender.MALE);
 		subscriber.setOTTMaxDevices(new BigInteger("2"));
-		subscriber.setOTTCooldown(new BigInteger("0"));
+		subscriber.setOTTCooldown(new BigInteger("1"));
 		subscriber.setUsage("Test");
 		subscriber.setRegionName(region);
 		request.setSubscriber(subscriber);

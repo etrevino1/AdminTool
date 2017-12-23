@@ -56,9 +56,10 @@ table.list, table.list td, table.list th {
 				</select></td>
 			</tr>
 			<tr>
-				<td colspan="2"><s:submit key="label.retrieve" type="button"
-						theme="simple" /> <s:submit key="label.create" type="button"
-						onclick="abrir();" theme="simple" /></td>
+				<td colspan="2">
+					<s:submit key="label.retrieve" type="button" theme="simple" /> 
+					<s:submit key="label.create" type="button"	onclick="abrir();" theme="simple" />
+				</td>
 			</tr>
 		</table>
 	</s:form>
@@ -104,7 +105,7 @@ table.list, table.list td, table.list th {
 		<td><label>Paquete:</label></td>
 		<td><select name="irisPackage">
 				<option disabled selected value>
-					<c:forEach var="row" items="${rs.rows}">
+					<c:forEach var="row" items="${packages}">
 						<option value='${row.package_name}'>${row.package_name}</option>
 					</c:forEach>
 		</select></td>

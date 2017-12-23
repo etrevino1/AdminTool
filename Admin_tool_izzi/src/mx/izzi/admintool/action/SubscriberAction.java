@@ -1,13 +1,18 @@
 package mx.izzi.admintool.action;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import mx.izzi.admintool.admin.service.business.ServicePackageBusiness;
+import mx.izzi.admintool.admin.service.dto.ServicePackageDTO;
 import mx.izzi.admintool.business.MixedBusiness;
 import mx.izzi.admintool.business.SubscriberBusiness;
 import mx.izzi.admintool.dto.IzziTvClientDTO;
@@ -25,10 +30,13 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 
 	private SubscriberBusiness subscriberBusiness;
 	private MixedBusiness mixedBusiness;
+	private ServicePackageBusiness servicePackageBusiness;
 
 	private String account = null, irisId = null, node = null, region = null;
 
 	private IzziTvClientDTO client = null;
+	
+	private List<ServicePackageDTO> packages = null;
 
 	@Override
 	public String execute () {
@@ -56,6 +64,9 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 		}else if (irisId != null && irisId.length() > 0){
 			client = mixedBusiness.getClient(Long.parseLong(irisId), node, user);
 			account = client.getSubscriber().getOperatorSubscriberId().getId();
+		}
+		if(client != null){
+			packages = servicePackageBusiness.getPackage(node);
 		}
 
 		session.put("account", account);
@@ -148,6 +159,15 @@ public class SubscriberAction extends ActionSupport implements SessionAware, Ser
 
 	public IzziTvClientDTO getClient() {
 		return client;
+	}
+	
+	public List<ServicePackageDTO> getPackages() {
+		return packages;
+	}
+
+	@Autowired
+	public void setServicePackageBusiness(ServicePackageBusiness servicePackageBusiness) {
+		this.servicePackageBusiness = servicePackageBusiness;
 	}
 
 	@Override

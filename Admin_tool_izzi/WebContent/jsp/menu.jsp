@@ -2,6 +2,20 @@
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> -->
 <html>
 <head>
+
+<style>
+table.list {
+	border-collapse: collapse;
+	width: 40%;
+}
+
+table.list, table.list td, table.list th {
+	border: 1px solid gray;
+	padding: 5px;
+}
+</style>
+
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -27,6 +41,8 @@
 	</s:url>
 	<s:url id="ippv" namespace="/ippv" action="ippv">
 	</s:url>
+	<s:url id="paquetes" namespace="/service" action="getPackage">
+	</s:url>
 	<s:a href="%{localeEN}">English</s:a>
 	<s:a href="%{localeES}">Español</s:a>
 	<s:a href="%{localeDE}">Deutsche</s:a>
@@ -47,6 +63,8 @@
 	<s:a href="%{viewLog}">Log</s:a>
 	<% } %>
 	<s:a href="%{ippv}">iPPV</s:a>
+	<br />
+	<s:a href="%{paquetes}">Paquetes</s:a>
 	<br />
 	<% if(request.isUserInRole("admintool-admin")){ %>
 	<a href="<s:url action="index" namespace="config-browser" />">Launch

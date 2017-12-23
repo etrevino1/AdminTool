@@ -7,11 +7,11 @@ import mx.izzi.admintool.user.dto.PlatformUserDTO;
 import mx.izzi.admintool.user.dto.PlatformUserRoleDTO;
 
 public interface UserActionBusiness {
-	public List<PlatformUserDTO> getUsers();
-	public List<PlatformUserRoleDTO> getUserRoles(String user);
-	public void createUser(String userName, String password);
-	public void deleteUser(String userName);
-	public void deleteUserRole(String user, String role);
-	public void assignUserRole(String user, String role);
-	public List<PlatformRoleDTO> getUserNotRoles(String user);
+	public List<PlatformUserDTO> getUsers(String user);
+	public List<PlatformUserRoleDTO> getUserRoles(String userName, String user);
+	public void createUser(String userName, String password, String user);
+	public void deleteUser(String userName, String user);
+	public void deleteUserRole(String userName, String role, String user);
+	public void assignUserRole(String userName, String role, String user);
+	public List<PlatformRoleDTO> getUserNotRoles(String userName, String user);
 }
