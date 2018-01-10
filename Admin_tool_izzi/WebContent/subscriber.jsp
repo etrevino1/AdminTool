@@ -123,6 +123,7 @@ table.list, table.list td, table.list th {
 				<th align="left"><s:text name="label.irisPackageId" /></th>
 				<th align="left"><s:text name="label.packageName" /></th>
 				<th align="left"><s:text name="label.creationDate" /></th>
+				<th align="left"><s:text name="label.hardwareId" /></th>
 			</tr>
 
 			<c:forEach items="${client.subscription}" var="current">
@@ -136,6 +137,7 @@ table.list, table.list td, table.list th {
 					<td>${current.irisPackageId}</td>
 					<td>${current.packageName}</td>
 					<td>${current.creationDatetime.time}</td>
+					<td>${current.irisHardwareId}</td>
 				</tr>
 			</c:forEach>
 		</table>
