@@ -75,6 +75,9 @@ table.list, table.list td, table.list th {
 				<th align="left"><s:text name="label.irisId" /></th>
 				<th align="left"><s:text name="label.regionName" /></th>
 				<th align="left"><s:text name="label.PPV"></s:text></th>
+				<th align="left"><s:text name="label.VIP"></s:text></th>
+				<th align="left"><s:text name="label.devices"></s:text></th>
+				<th align="left"><s:text name="label.cooldown"></s:text></th>
 				<th align="left"><s:text name="label.actions" /></th>
 			</tr>
 			<tr>
@@ -82,6 +85,9 @@ table.list, table.list td, table.list th {
 				<td>${client.subscriber.irisId}</td>
 				<td>${client.subscriber.regionName}</td>
 				<td>${client.impulsePPVAllowed}</td>
+				<td>${client.subscriber.VIP}</td>
+				<td>${client.subscriber.OTTMaxDevices}</td>
+				<td>${client.subscriber.OTTCooldown}</td>
 				<td><s:url id="deleteSubscriber" namespace="/suscriptor"
 						action="deleteSubscriber">
 						<s:param name="account">${account}</s:param>

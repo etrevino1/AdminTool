@@ -77,6 +77,7 @@ public class CpeAction extends ActionSupport implements SessionAware, ServletReq
 					return ERROR;
 				}catch(NDSTransformationTVIException ndsttvie){
 					log.error(ndsttvie.getMessage());
+					ndsttvie.printStackTrace();
 					return ERROR;
 				}
 				return "found";
