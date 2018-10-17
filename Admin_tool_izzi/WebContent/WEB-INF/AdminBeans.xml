@@ -137,6 +137,7 @@
 
 	<bean id="userActionBusiness"
 		class="mx.izzi.admintool.user.business.impl.UserActionBusinessImpl">
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
 
 	<bean id="userActionAction" class="mx.izzi.admintool.user.action.UserActionAction"
@@ -170,16 +171,39 @@
 	</bean>
 	<bean id="servicePackageSPR" class="mx.izzi.admintool.admin.service.dao.sp.ServicePackageSPR">
 	</bean>
+	<bean id="servicePackageDetailSPR" class="mx.izzi.admintool.admin.service.dao.sp.ServicePackageDetailSPR">
+	</bean>
+	<bean id="servicePackageDetailSPI" class="mx.izzi.admintool.admin.service.dao.sp.ServicePackageDetailSPI">
+	</bean>
+	<bean id="servicePackageDetailSPD" class="mx.izzi.admintool.admin.service.dao.sp.ServicePackageDetailSPD">
+	</bean>
+	<bean id="servicePackageDetailSPU" class="mx.izzi.admintool.admin.service.dao.sp.ServicePackageDetailSPU">
+	</bean>
+	<bean id="miradaNodeSPR" class="mx.izzi.admintool.dao.sp.MiradaNodeSPR">
+	</bean>
 	
 	<bean id="servicePackageDAO" class="mx.izzi.admintool.admin.service.dao.impl.ServicePackageDAOImpl">
+	</bean>
+	<bean id="servicePackageDetailDAO" class="mx.izzi.admintool.admin.service.dao.impl.ServicePackageDetailDAOImpl">
+	</bean>
+	<bean id="nodeDAO" class="mx.izzi.admintool.dao.impl.NodeDAOImpl">
 	</bean>
 	
 	<bean id="servicePackageBusiness"
 		class="mx.izzi.admintool.admin.service.business.impl.ServicePackageBusinessImpl">
 		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
 	</bean>
+	<bean id="servicePackageDetailBusiness"
+		class="mx.izzi.admintool.admin.service.business.impl.ServicePackageDetailBusinessImpl">
+		<property name="logUserOperationDAO" ref="logUserOperationDAO"></property>
+	</bean>
+	<bean id="nodeBusinessImpl"
+		class="mx.izzi.admintool.business.impl.NodeBusinessImpl">
+	</bean>
 	
 	<bean id="servicePackageAction" class="mx.izzi.admintool.admin.service.action.ServicePackageAction">
+	</bean>
+	<bean id="servicePackageDetailAction" class="mx.izzi.admintool.admin.service.action.ServicePackageDetailAction">
 	</bean>
 
 	<!-- LDAP 

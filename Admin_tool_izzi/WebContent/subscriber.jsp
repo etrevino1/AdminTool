@@ -56,9 +56,10 @@ table.list, table.list td, table.list th {
 				</select></td>
 			</tr>
 			<tr>
-				<td colspan="2"><s:submit key="label.retrieve" type="button"
-						theme="simple" /> <s:submit key="label.create" type="button"
-						onclick="abrir();" theme="simple" /></td>
+				<td colspan="2">
+					<s:submit key="label.retrieve" type="button" theme="simple" /> 
+					<s:submit key="label.create" type="button"	onclick="abrir();" theme="simple" />
+				</td>
 			</tr>
 		</table>
 	</s:form>
@@ -74,6 +75,9 @@ table.list, table.list td, table.list th {
 				<th align="left"><s:text name="label.irisId" /></th>
 				<th align="left"><s:text name="label.regionName" /></th>
 				<th align="left"><s:text name="label.PPV"></s:text></th>
+				<th align="left"><s:text name="label.VIP"></s:text></th>
+				<th align="left"><s:text name="label.devices"></s:text></th>
+				<th align="left"><s:text name="label.cooldown"></s:text></th>
 				<th align="left"><s:text name="label.actions" /></th>
 			</tr>
 			<tr>
@@ -81,6 +85,9 @@ table.list, table.list td, table.list th {
 				<td>${client.subscriber.irisId}</td>
 				<td>${client.subscriber.regionName}</td>
 				<td>${client.impulsePPVAllowed}</td>
+				<td>${client.subscriber.VIP}</td>
+				<td>${client.subscriber.OTTMaxDevices}</td>
+				<td>${client.subscriber.OTTCooldown}</td>
 				<td><s:url id="deleteSubscriber" namespace="/suscriptor"
 						action="deleteSubscriber">
 						<s:param name="account">${account}</s:param>
@@ -104,7 +111,7 @@ table.list, table.list td, table.list th {
 		<td><label>Paquete:</label></td>
 		<td><select name="irisPackage">
 				<option disabled selected value>
-					<c:forEach var="row" items="${rs.rows}">
+					<c:forEach var="row" items="${packages}">
 						<option value='${row.package_name}'>${row.package_name}</option>
 					</c:forEach>
 		</select></td>
@@ -122,6 +129,7 @@ table.list, table.list td, table.list th {
 				<th align="left"><s:text name="label.irisPackageId" /></th>
 				<th align="left"><s:text name="label.packageName" /></th>
 				<th align="left"><s:text name="label.creationDate" /></th>
+				<th align="left"><s:text name="label.hardwareId" /></th>
 			</tr>
 
 			<c:forEach items="${client.subscription}" var="current">
@@ -135,6 +143,7 @@ table.list, table.list td, table.list th {
 					<td>${current.irisPackageId}</td>
 					<td>${current.packageName}</td>
 					<td>${current.creationDatetime.time}</td>
+					<td>${current.irisHardwareId}</td>
 				</tr>
 			</c:forEach>
 		</table>

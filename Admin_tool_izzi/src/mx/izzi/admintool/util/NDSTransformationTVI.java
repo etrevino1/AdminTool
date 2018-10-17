@@ -28,7 +28,8 @@ public class NDSTransformationTVI {
 	    String caStbId = sdpHardwareId.substring(5, 15);
 	    Long caStbIdNum = Long.parseLong(caStbId) - (1L << 31);
 	    // Should this ID be handled as a HEX string, as above, or as a decimal?
-	    // Assume a decimal for the time being
+	    // Assume a decimal for the time being+
+		System.out.println("createdNDSChipID: " + caStbIdNum);
 	    return caStbIdNum.toString();
 	    //return Long.toHexString(caStbIdNum).toUpperCase();
 	}

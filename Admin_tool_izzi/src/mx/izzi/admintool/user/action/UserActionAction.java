@@ -59,7 +59,7 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 	public String execute(){
 		log.debug("UserActionAction - execute");
 		if(request.isUserInRole("user-get")){
-			users = userActionBusiness.getUsers();
+			users = userActionBusiness.getUsers(request.getUserPrincipal().getName());
 			return SUCCESS;
 		}else{
 			log.debug(request.getUserPrincipal().getName() + ": has no get user access");
@@ -76,7 +76,7 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 	public String createUser(){
 		if(request.isUserInRole("user-create")){
 			if(user != null && password != null && user.length() > 5 && password.length() > 5){
-				userActionBusiness.createUser(user, password);
+				userActionBusiness.createUser(user, password, request.getUserPrincipal().getName());
 			}
 		}else{
 			log.debug(request.getUserPrincipal().getName() + ": has no create user access");
@@ -94,7 +94,7 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 		log.debug("Delete user: " + user);
 		if(request.isUserInRole("user-delete")){
 			if(user != null && user.length() > 5){
-				userActionBusiness.deleteUser(user);
+				userActionBusiness.deleteUser(user, request.getUserPrincipal().getName());
 			}
 		}else{
 			log.debug(request.getUserPrincipal().getName() + ": has no delete user access");
@@ -118,8 +118,8 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 			}else{
 				user = (String)session.get("user");
 			}
-			userRoles = userActionBusiness.getUserRoles(user);
-			userNotRoles = userActionBusiness.getUserNotRoles(user);
+			userRoles = userActionBusiness.getUserRoles(user, request.getUserPrincipal().getName());
+			userNotRoles = userActionBusiness.getUserNotRoles(user, request.getUserPrincipal().getName());
 			return SUCCESS;
 		}else{
 			log.debug(request.getUserPrincipal().getName() + ": has no role user access");
@@ -136,7 +136,7 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 	public String deleteUserRole(){
 		if(request.isUserInRole("user-deleteRole")){
 			if(user != null && user.length() > 5){
-				userActionBusiness.deleteUserRole(user, role);
+				userActionBusiness.deleteUserRole(user, role, request.getUserPrincipal().getName());
 			}
 		}else{
 			log.debug(request.getUserPrincipal().getName() + ": has no delete role user access");
@@ -155,7 +155,7 @@ public class UserActionAction extends ActionSupport implements SessionAware, Ser
 		if(request.isUserInRole("user-addRole")){
 			user = (String)session.get("user");
 			if(user != null && user.length() > 5 && role != null && role.length() > 2){
-				userActionBusiness.assignUserRole(user, role);
+				userActionBusiness.assignUserRole(user, role, request.getUserPrincipal().getName());
 			}
 		}else{
 			log.debug(request.getUserPrincipal().getName() + ": has no add role user access");
