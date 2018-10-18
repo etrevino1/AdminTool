@@ -3,6 +3,8 @@ package mx.izzi.admintool.admin.service.dto;
 import java.io.Serializable;
 
 public class ServicePackageDetailDTO implements Serializable {
+	static final long serialVersionUID = 1L; 
+	
 	private String packageName;
 	private String packageNode;
 	private String packageDetail;
